@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/materialFragment"
+        android:name="com.example.materialestimator.views.MaterialFragment"
+        android:label="Material"
+        tools:layout="@layout/fragment_material">
+        <argument
+            android:name="ID"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/materialsFragment"
+        android:name="com.example.materialestimator.views.MaterialsFragment"
+        android:label="Materials"
+        tools:layout="@layout/fragment_materials">
+        <action
+            android:id="@+id/action_materialListFragment_to_materialFragment"
+            app:destination="@id/materialFragment" />
+        <action
+            android:id="@+id/action_materialsFragment_to_materialCalculatorFragment"
+            app:destination="@id/materialCalculatorFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.materialestimator.views.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_materialListFragment"
+            app:destination="@id/materialsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/materialCalculatorFragment"
+        android:name="com.example.materialestimator.views.MaterialsCalculatorFragment"
+        android:label="Material Calculator"
+        tools:layout="@layout/fragment_materials_calculator" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.materialestimator.views.SettingsFragment"
+        android:label="Settings"
+        tools:layout="@layout/fragment_settings" />
+</navigation>
