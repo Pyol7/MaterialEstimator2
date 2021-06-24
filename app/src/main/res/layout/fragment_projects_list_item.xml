@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:orientation="vertical"
+    card_view:cardElevation="3dp"
+    card_view:cardUseCompatPadding="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/projects_list_cl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="3dp">
+
+        <ImageView
+            android:id="@+id/project_image_iv"
+            android:layout_width="90dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="8dp"
+            android:contentDescription="Project Image"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@drawable/project_4" />
+
+        <TextView
+            android:id="@+id/project_name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="6dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            card_view:layout_constraintStart_toEndOf="@+id/project_image_iv"
+            card_view:layout_constraintTop_toTopOf="@+id/project_image_iv"
+            tools:text="La Riviera Apt 10F" />
+
+        <TextView
+            android:id="@+id/project_start_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="Start date"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            card_view:layout_constraintStart_toStartOf="@+id/project_name_tv"
+            card_view:layout_constraintTop_toBottomOf="@+id/project_name_tv" />
+
+        <TextView
+            android:id="@+id/project_client_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="Client"
+            card_view:layout_constraintStart_toStartOf="@+id/project_start_tv"
+            card_view:layout_constraintTop_toBottomOf="@+id/project_start_tv" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
