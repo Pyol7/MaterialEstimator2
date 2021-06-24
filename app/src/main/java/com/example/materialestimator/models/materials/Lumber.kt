@@ -1,27 +1,28 @@
-package com.example.materialestimator.models.finishes
+package com.example.materialestimator.models.materials
 
-import com.example.materialestimator.models.entities.Material
+import com.example.materialestimator.models.Material
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-class Tee(
+class Lumber(
+
     name: String,
     unitprice: Double,
     length: Double,
     image: String,
-    materialCategoryID: Int
+    categoryid: Int
 
 ) : Material(
-    subtype = "Tee",
+    subtype = "Lumber",
     name = name,
     unitprice = unitprice,
     length = length,
     image = image,
-    materialCategoryID = materialCategoryID
+    categoryid = categoryid
 ) {
 
     fun calcQty(length: Double, width: Double): Double {
-        return length * width / this.length
+        return length * width / (this.length * this.width)
     }
 
     override fun getOptionalProperties(): ArrayList<Pair<String, String>> {

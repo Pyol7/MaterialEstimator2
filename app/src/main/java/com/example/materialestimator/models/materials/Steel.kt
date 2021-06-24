@@ -1,24 +1,24 @@
-package com.example.materialestimator.models.structural
+package com.example.materialestimator.models.materials
 
-import com.example.materialestimator.models.entities.Material
+import com.example.materialestimator.models.Material
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-class Lumber(
+class Steel(
 
     name: String,
     unitprice: Double,
     length: Double,
     image: String,
-    materialCategoryID: Int
+    categoryid: Int
 
 ) : Material(
-    subtype = "Lumber",
+    subtype = "Steel",
     name = name,
     unitprice = unitprice,
     length = length,
     image = image,
-    materialCategoryID = materialCategoryID
+    categoryid = categoryid
 ) {
 
     fun calcQty(length: Double, width: Double): Double {

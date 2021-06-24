@@ -8,26 +8,30 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.materialestimator.TAG
-import com.example.materialestimator.models.entities.Category
-import com.example.materialestimator.models.entities.Material
+import com.example.materialestimator.models.Category
+import com.example.materialestimator.models.Material
+import com.example.materialestimator.models.Project
 import com.example.materialestimator.storage.local.dao.CategoryDao
 import com.example.materialestimator.storage.local.dao.MaterialDao
+import com.example.materialestimator.storage.local.dao.ProjectDao
 import com.example.materialestimator.utilities.Converters
 import com.example.materialestimator.utilities.DataSource
 
 @Database(
     entities = [
-        Material::class,
-        Category::class
+        Project::class,
+        Category::class,
+        Material::class
     ],
-    version = 4,
+    version = 1,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract fun materialDao(): MaterialDao
+    abstract fun projectDao(): ProjectDao
     abstract fun categoryDao(): CategoryDao
+    abstract fun materialDao(): MaterialDao
 
     companion object {
 

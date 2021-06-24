@@ -1,10 +1,8 @@
 package com.example.materialestimator.utilities
 
 import androidx.room.TypeConverter
-import com.example.materialestimator.models.entities.Material
-import com.example.materialestimator.models.finishes.*
-import com.example.materialestimator.models.structural.Lumber
-import com.example.materialestimator.models.structural.Steel
+import com.example.materialestimator.models.Material
+import com.example.materialestimator.models.materials.*
 import com.squareup.moshi.FromJson
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.ToJson
@@ -12,7 +10,6 @@ import com.squareup.moshi.Types
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  * Type converters for Moshi and Room.
@@ -93,7 +90,7 @@ class Converters {
 //            return null
 //        }
 
-        var moshiSubtypes: Moshi = Moshi.Builder()
+        private var moshiSubtypes: Moshi = Moshi.Builder()
             .add(
                 PolymorphicJsonAdapterFactory.of(Material::class.java, "subtype")
                     .withSubtype(CChannel::class.java, "CChannel")

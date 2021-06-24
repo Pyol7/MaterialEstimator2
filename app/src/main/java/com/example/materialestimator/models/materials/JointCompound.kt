@@ -1,35 +1,35 @@
-package com.example.materialestimator.models.structural
+package com.example.materialestimator.models.materials
 
-import com.example.materialestimator.models.entities.Material
+import com.example.materialestimator.models.Material
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-class Steel(
+class JointCompound(
 
     name: String,
     unitprice: Double,
-    length: Double,
+    coverage: Double,
     image: String,
-    materialCategoryID: Int
+    categoryid: Int
 
 ) : Material(
-    subtype = "Steel",
+    subtype = "JointCompound",
     name = name,
     unitprice = unitprice,
-    length = length,
+    coverage = coverage,
     image = image,
-    materialCategoryID = materialCategoryID
+    categoryid = categoryid
 ) {
 
     fun calcQty(length: Double, width: Double): Double {
-        return length * width / (this.length * this.width)
+        return length * width / this.coverage
     }
 
     override fun getOptionalProperties(): ArrayList<Pair<String, String>> {
         val array: ArrayList<Pair<String, String>> = arrayListOf()
         array.add(Pair("Name:", name))
         array.add(Pair("Unit Price:", unitprice.toString()))
-        array.add(Pair("Length:", length.toString()))
+        array.add(Pair("Coverage:", coverage.toString()))
         return array
     }
 

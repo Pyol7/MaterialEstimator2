@@ -1,15 +1,11 @@
 package com.example.materialestimator.viewModels
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
-import com.example.materialestimator.TAG
-import com.example.materialestimator.models.entities.Material
+import com.example.materialestimator.models.Material
 import com.example.materialestimator.storage.local.AppDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 
 class MaterialViewModel(application: Application) : AndroidViewModel(application) {
     private val materialDao = AppDatabase.getInstance(application).materialDao()

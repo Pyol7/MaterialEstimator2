@@ -1,7 +1,5 @@
 package com.example.materialestimator.adapters
 
-import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,14 +10,12 @@ import androidx.annotation.Nullable
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.materialestimator.R
-import com.example.materialestimator.TAG
-import com.example.materialestimator.models.entities.Material
+import com.example.materialestimator.models.Material
 import com.example.materialestimator.utilities.Converters
 
 class MaterialsFragmentListAdapter() :
     RecyclerView.Adapter<MaterialsFragmentListAdapter.MaterialViewHolder>() {
 
-    private lateinit var mContext: Context
     private var materials = arrayListOf<Material>()
     private var listener: OnItemClickListener? = null
 
@@ -41,8 +37,7 @@ class MaterialsFragmentListAdapter() :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MaterialViewHolder {
-        mContext = parent.context
-        val inflater = LayoutInflater.from(mContext)
+        val inflater = LayoutInflater.from(parent.context)
         val v = inflater.inflate(
             R.layout.fragment_materials_list_item,
             parent,
@@ -55,16 +50,16 @@ class MaterialsFragmentListAdapter() :
         holder: MaterialViewHolder,
         position: Int
     ) {
+        val context = holder.itemView.context
         val material = materials[position]
-        val imgId = mContext.resources?.getIdentifier(
+        val imgId = context.resources?.getIdentifier(
             material.image,
             "drawable",
-            mContext.packageName
+            context.packageName
         ) as Int
         holder.imageIV.setImageResource(imgId)
         holder.nameTv.text = material.name
         holder.unitPriceTv.text = material.unitprice.toString()
-        holder.categoryTv.text = material.selected.toString()
         holder.selectedCb.isChecked = material.selected
 
     }
@@ -73,12 +68,11 @@ class MaterialsFragmentListAdapter() :
 
     inner class MaterialViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val listItemView = itemView.findViewById(R.id.material_list_cl) as View
+        private val listItemView = itemView.findViewById(R.id.material_list_cl) as View
         val imageIV = itemView.findViewById(R.id.material_list_image_iv) as ImageView
         val nameTv = itemView.findViewById(R.id.material_list_name_tv) as TextView
         val unitPriceTv =
             itemView.findViewById(R.id.material_list_unit_price_tv) as TextView
-        val categoryTv = itemView.findViewById(R.id.material_list_category_tv) as TextView
         val selectedCb = itemView.findViewById(R.id.material_list_selected_cb) as CheckBox
 
         init {
@@ -98,7 +92,7 @@ class MaterialsFragmentListAdapter() :
              * Send the Material ID to the listener.
              */
             listItemView.setOnClickListener {
-                listener?.onItemClicked(materials[absoluteAdapterPosition].materialID)
+                listener?.onItemClicked(materials[absoluteAdapterPosition].id)
             }
         }
 
@@ -119,7 +113,7 @@ class MaterialDiffCallback(
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         val itemsAreSame =
-            oldList[oldItemPosition].materialID == newList[newItemPosition].materialID
+            oldList[oldItemPosition].id == newList[newItemPosition].id
 
 //            Log.i(TAG, "areItemsTheSame = $itemsAreSame")
 

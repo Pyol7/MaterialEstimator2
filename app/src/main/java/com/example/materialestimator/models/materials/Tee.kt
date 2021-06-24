@@ -1,24 +1,23 @@
-package com.example.materialestimator.models.finishes
+package com.example.materialestimator.models.materials
 
-import com.example.materialestimator.models.entities.Material
+import com.example.materialestimator.models.Material
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-class WallAngle(
-
+class Tee(
     name: String,
     unitprice: Double,
     length: Double,
     image: String,
-    materialCategoryID: Int
+    categoryid: Int
 
 ) : Material(
-    subtype = "WallAngle",
+    subtype = "Tee",
     name = name,
     unitprice = unitprice,
     length = length,
     image = image,
-    materialCategoryID = materialCategoryID
+    categoryid = categoryid
 ) {
 
     fun calcQty(length: Double, width: Double): Double {

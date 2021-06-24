@@ -1,6 +1,6 @@
-package com.example.materialestimator.models.finishes
+package com.example.materialestimator.models.materials
 
-import com.example.materialestimator.models.entities.Material
+import com.example.materialestimator.models.Material
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
@@ -11,7 +11,7 @@ class Panel(
     length: Double,
     width: Double,
     image: String,
-    materialCategoryID: Int
+    categoryid: Int
 
 ) : Material(
     subtype = "Panel",
@@ -20,7 +20,7 @@ class Panel(
     length = length,
     width = width,
     image = image,
-    materialCategoryID = materialCategoryID
+    categoryid = categoryid
 ) {
 
     fun calcQty(length: Double, width: Double): Double {

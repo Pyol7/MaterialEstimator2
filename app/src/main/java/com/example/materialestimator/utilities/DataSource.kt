@@ -1,10 +1,9 @@
 package com.example.materialestimator.utilities
 
-import com.example.materialestimator.models.entities.Category
-import com.example.materialestimator.models.entities.Material
-import com.example.materialestimator.models.finishes.*
-import com.example.materialestimator.models.structural.Lumber
-import com.example.materialestimator.models.structural.Steel
+import com.example.materialestimator.models.Category
+import com.example.materialestimator.models.Material
+import com.example.materialestimator.models.Project
+import com.example.materialestimator.models.materials.*
 import com.example.materialestimator.storage.local.AppDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -15,6 +14,9 @@ class DataSource {
 
         fun populateDatabase(instance: AppDatabase) {
             CoroutineScope(Dispatchers.IO).launch {
+                createProjectList().forEach {
+                    instance.projectDao().insert(it)
+                }
                 createCategoryList().forEach {
                     instance.categoryDao().insert(it)
                 }
@@ -28,6 +30,17 @@ class DataSource {
                     instance.materialDao().insert(it)
                 }
             }
+        }
+
+        private fun createProjectList(): ArrayList<Project> {
+            val list = ArrayList<Project>()
+            list.add(Project(name = "108 Ridge Road Maraval", image = "project_1"))
+            list.add(Project(name = "54 Lange Park Chaguanas", image = "project_2"))
+            list.add(Project(name = "23 Main Road Tobago", image = "project_3"))
+            list.add(Project(name = "Anglais Road Cumana", image = "project_4"))
+            list.add(Project(name = "La Riviera Apt 1K", image = "project_5"))
+            list.add(Project(name = "1/4 mm Toco Road Toco", image = "project_6"))
+            return list
         }
 
         private fun createCategoryList(): ArrayList<Category> {
@@ -47,7 +60,7 @@ class DataSource {
                     length = 8.0,
                     width = 4.0,
                     image = "ultralight_gypsum_panel",
-                    materialCategoryID = 1
+                    categoryid = 1
                 )
             )
             list.add(
@@ -57,7 +70,7 @@ class DataSource {
                     length = 2.0,
                     width = 2.0,
                     image = "acoustical_ceiling_tile",
-                    materialCategoryID = 1
+                    categoryid = 1
                 )
             )
             list.add(
@@ -66,7 +79,7 @@ class DataSource {
                     unitprice = 15.00,
                     length = 12.0,
                     image = "furring_channel",
-                    materialCategoryID = 1
+                    categoryid = 1
                 )
             )
             list.add(
@@ -75,7 +88,7 @@ class DataSource {
                     unitprice = 8.0,
                     length = 10.0,
                     image = "gypsum_ceiling_wall_angle",
-                    materialCategoryID = 1
+                    categoryid = 1
                 )
             )
             list.add(
@@ -84,7 +97,7 @@ class DataSource {
                     unitprice = 50.0,
                     length = 16.0,
                     image = "gypsum_c_channel",
-                    materialCategoryID = 1
+                    categoryid = 1
                 )
             )
             list.add(
@@ -93,7 +106,7 @@ class DataSource {
                     unitprice = 50.0,
                     coverage = 150.0,
                     image = "all_purpose_joint_compound",
-                    materialCategoryID = 1
+                    categoryid = 1
                 )
             )
             list.add(
@@ -102,7 +115,7 @@ class DataSource {
                     unitprice = 0.15,
                     coverage = 40.0,
                     image = "drywall_screw",
-                    materialCategoryID = 1
+                    categoryid = 1
                 )
             )
             list.add(
@@ -111,7 +124,7 @@ class DataSource {
                     unitprice = 8.0,
                     length = 10.0,
                     image = "acoustical_wall_angle",
-                    materialCategoryID = 1
+                    categoryid = 1
                 )
             )
             list.add(
@@ -120,7 +133,7 @@ class DataSource {
                     unitprice = 25.0,
                     length = 12.0,
                     image = "cross_tee",
-                    materialCategoryID = 1
+                    categoryid = 1
                 )
             )
             list.add(
@@ -129,7 +142,7 @@ class DataSource {
                     unitprice = 5.0,
                     length = 4.0,
                     image = "cross_tee",
-                    materialCategoryID = 1
+                    categoryid = 1
                 )
             )
             list.add(
@@ -138,7 +151,7 @@ class DataSource {
                     unitprice = 3.50,
                     length = 2.0,
                     image = "cross_tee",
-                    materialCategoryID = 1
+                    categoryid = 1
                 )
             )
             return list
@@ -153,7 +166,7 @@ class DataSource {
                     length = 8.0,
                     width = 4.0,
                     image = "plywood",
-                    materialCategoryID = 2
+                    categoryid = 2
                 )
             )
             list.add(
@@ -162,7 +175,7 @@ class DataSource {
                     unitprice = 35.00,
                     length = 10.00,
                     image = "lumber_2x4",
-                    materialCategoryID = 2
+                    categoryid = 2
                 )
             )
             list.add(
@@ -171,7 +184,7 @@ class DataSource {
                     unitprice = 75.00,
                     length = 12.00,
                     image = "lumber_4x4",
-                    materialCategoryID = 2
+                    categoryid = 2
                 )
             )
             return list
@@ -186,7 +199,7 @@ class DataSource {
                     length = 8.0,
                     width = 4.0,
                     image = "steel_corr_sheet",
-                    materialCategoryID = 3
+                    categoryid = 3
                 )
             )
             list.add(
@@ -195,7 +208,7 @@ class DataSource {
                     unitprice = 35.00,
                     length = 20.00,
                     image = "steel_rhs",
-                    materialCategoryID = 3
+                    categoryid = 3
                 )
             )
             list.add(
@@ -204,7 +217,7 @@ class DataSource {
                     unitprice = 75.00,
                     length = 20.00,
                     image = "steel_angle",
-                    materialCategoryID = 3
+                    categoryid = 3
                 )
             )
             return list

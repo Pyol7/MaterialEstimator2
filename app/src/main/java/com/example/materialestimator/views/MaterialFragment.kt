@@ -8,20 +8,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.*
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.materialestimator.R
 import com.example.materialestimator.TAG
-import com.example.materialestimator.models.entities.Material
+import com.example.materialestimator.models.Material
 import com.example.materialestimator.utilities.Converters
 import com.example.materialestimator.utilities.Functions
 import com.example.materialestimator.viewModels.MaterialViewModel
 import java.util.*
 
 class MaterialFragment : Fragment() {
-    private val vm: MaterialViewModel by activityViewModels()
+    private val materialVm: MaterialViewModel by activityViewModels()
     private var properties: ArrayList<Pair<String, String>>? = arrayListOf()
     private var material: Material? = null
     private var rvAdapter = PropertiesListAdapter()
@@ -31,7 +33,7 @@ class MaterialFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Find and configure the recycler view
+        // Configure the recycler view
         val view = inflater.inflate(R.layout.fragment_material, container, false)
         val rv = view.findViewById(R.id.material_properties_rv) as RecyclerView
         rv.layoutManager = LinearLayoutManager(inflater.context)
@@ -42,9 +44,16 @@ class MaterialFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Use this fragment's toolbar and provide all functionality
+        val toolbar = view.findViewById(R.id.material_toolbar) as Toolbar
+        toolbar.inflateMenu(R.menu.general_toolbar_menu)
+        toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
+
         // Get and observe the Material clicked
         val id = arguments?.getInt("Key")
-        vm.get(id).observe(viewLifecycleOwner, { baseMaterial ->
+        materialVm.get(id).observe(viewLifecycleOwner, { baseMaterial ->
 
             material = Converters.convertBaseTypeToSubtype(baseMaterial)
 
@@ -126,7 +135,7 @@ class MaterialFragment : Fragment() {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     v.clearFocus() // Triggers the last onFocusChanged event to save change
                     context?.let { Functions.hideKeyboard(it, v.rootView) }
-                    vm.insert(material)
+                    materialVm.insert(material)
                 }
                 false
             }

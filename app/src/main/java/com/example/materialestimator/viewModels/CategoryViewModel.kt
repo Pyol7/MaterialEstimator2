@@ -2,7 +2,7 @@ package com.example.materialestimator.viewModels
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.example.materialestimator.models.entities.Category
+import com.example.materialestimator.models.Category
 import com.example.materialestimator.models.relationships.CategoriesWithMaterials
 import com.example.materialestimator.storage.local.AppDatabase
 import kotlinx.coroutines.Dispatchers

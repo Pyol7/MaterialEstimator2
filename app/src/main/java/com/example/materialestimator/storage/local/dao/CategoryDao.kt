@@ -2,12 +2,12 @@ package com.example.materialestimator.storage.local.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.materialestimator.models.entities.Category
+import com.example.materialestimator.models.Category
 import com.example.materialestimator.models.relationships.CategoriesWithMaterials
 
 @Dao
 interface CategoryDao {
-    @Query("SELECT * FROM category WHERE categoryID = :ID")
+    @Query("SELECT * FROM category WHERE id = :ID")
     fun get(ID: Int?): LiveData<Category>
 
     @Query("SELECT * FROM category")

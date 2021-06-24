@@ -2,14 +2,14 @@ package com.example.materialestimator.storage.local.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.materialestimator.models.entities.Material
+import com.example.materialestimator.models.Material
 
 /**
  * Only LiveData or suspend functions allowed.
  */
 @Dao
 interface MaterialDao{
-    @Query("SELECT * FROM material WHERE materialID = :ID")
+    @Query("SELECT * FROM material WHERE id = :ID")
     fun get(ID: Int?): LiveData<Material>
 
     //LiveData is handled on a background thread so there is no need for a suspend function.
@@ -22,7 +22,7 @@ interface MaterialDao{
     @Query("SELECT * FROM material WHERE selected = 1")
     suspend fun getAllSelectedNonLiveData(): List<Material>
 
-    @Query("SELECT * FROM material WHERE materialCategoryID = :ID")
+    @Query("SELECT * FROM material WHERE categoryid = :ID")
     fun getAllByCategoryID(ID: Int): LiveData<List<Material>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

@@ -2,27 +2,24 @@ package com.example.materialestimator.views
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.view.LayoutInflater
 import android.widget.*
+import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.materialestimator.R
-import com.example.materialestimator.TAG
 import com.example.materialestimator.adapters.MaterialsFragmentListAdapter
-import com.example.materialestimator.models.entities.Category
-import com.example.materialestimator.models.entities.Material
+import com.example.materialestimator.models.Category
 import com.example.materialestimator.utilities.Converters
 import com.example.materialestimator.viewModels.CategoryViewModel
 import com.example.materialestimator.viewModels.MaterialViewModel
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 class MaterialsFragment : Fragment(R.layout.fragment_materials),
@@ -35,6 +32,13 @@ class MaterialsFragment : Fragment(R.layout.fragment_materials),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Use this fragment's toolbar and provide all functionality
+        val toolbar = view.findViewById(R.id.materials_toolbar) as Toolbar
+        toolbar.inflateMenu(R.menu.general_toolbar_menu)
+        toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
 
         val rv = view.findViewById(R.id.materials_rv) as RecyclerView
         rv.apply {
@@ -63,7 +67,7 @@ class MaterialsFragment : Fragment(R.layout.fragment_materials),
                     position: Int,
                     id: Long
                 ) {
-                    materialVm.setSelectedCategoryID(categories[position].categoryID)
+                    materialVm.setSelectedCategoryID(categories[position].id)
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -116,7 +120,7 @@ class MaterialsFragment : Fragment(R.layout.fragment_materials),
             val view = convertView ?: LayoutInflater.from(context)
                 .inflate(R.layout.fragment_materials_categories_list_item, parent, false)
             val idView = view.findViewById(R.id.materials_category_id_tv) as TextView
-            idView.text = category?.categoryID.toString()
+            idView.text = category?.id.toString()
             val nameView = view?.findViewById(R.id.materials_category_name_tv) as TextView
             nameView.text = category?.name
             return view
@@ -153,8 +157,8 @@ class MaterialsFragment : Fragment(R.layout.fragment_materials),
                         )
                         val json = Converters.materialListToJson(newList)
                         val bundle = bundleOf("Key" to json)
-                        view?.findNavController()
-                            ?.navigate(R.id.action_materialsFragment_to_materialCalculatorFragment, bundle)
+//                        view?.findNavController()
+//                            ?.navigate(R.id.action_materialsFragment_to_materialCalculatorFragment, bundle)
                     }
                     mode.finish()
                     true
