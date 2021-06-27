@@ -12,18 +12,17 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.materialestimator.R
 import com.example.materialestimator.TAG
-import com.example.materialestimator.models.Material
-import com.example.materialestimator.utilities.Converters
+import com.example.materialestimator.models.entities.Material
+import com.example.materialestimator.utilities.MoshiConverters
 import com.example.materialestimator.utilities.Functions
-import com.example.materialestimator.viewModels.MaterialViewModel
+import com.example.materialestimator.viewModels.MaterialsViewModel
 import java.util.*
 
 class MaterialFragment : Fragment() {
-    private val materialVm: MaterialViewModel by activityViewModels()
+    private val vm: MaterialsViewModel by activityViewModels()
     private var properties: ArrayList<Pair<String, String>>? = arrayListOf()
     private var material: Material? = null
     private var rvAdapter = PropertiesListAdapter()
@@ -36,7 +35,6 @@ class MaterialFragment : Fragment() {
         // Configure the recycler view
         val view = inflater.inflate(R.layout.fragment_material, container, false)
         val rv = view.findViewById(R.id.material_properties_rv) as RecyclerView
-        rv.layoutManager = LinearLayoutManager(inflater.context)
         rv.adapter = rvAdapter
         return view
     }
@@ -53,9 +51,9 @@ class MaterialFragment : Fragment() {
 
         // Get and observe the Material clicked
         val id = arguments?.getInt("Key")
-        materialVm.get(id).observe(viewLifecycleOwner, { baseMaterial ->
+        vm.get(id).observe(viewLifecycleOwner, { baseMaterial ->
 
-            material = Converters.convertBaseTypeToSubtype(baseMaterial)
+            material = MoshiConverters.convertBaseTypeToSubtype(baseMaterial)
 
             val imageIv = view.findViewById(R.id.material_image_iv) as ImageView
             val imgId = resources.getIdentifier(
@@ -135,7 +133,7 @@ class MaterialFragment : Fragment() {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     v.clearFocus() // Triggers the last onFocusChanged event to save change
                     context?.let { Functions.hideKeyboard(it, v.rootView) }
-                    materialVm.insert(material)
+                    vm.insert(material)
                 }
                 false
             }

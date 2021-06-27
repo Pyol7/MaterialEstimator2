@@ -2,7 +2,7 @@ package com.example.materialestimator.storage.local.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.materialestimator.models.Category
+import com.example.materialestimator.models.entities.Category
 import com.example.materialestimator.models.relationships.CategoriesWithMaterials
 
 @Dao
@@ -21,10 +21,10 @@ interface CategoryDao {
     suspend fun insert(category: Category?)
 
     @Update
-    suspend fun update(category: Category?);
+    suspend fun update(category: Category?)
 
     @Update
-    suspend fun updateAll(categories: List<Category>);
+    suspend fun updateAll(categories: List<Category>)
 
     @Query("DELETE FROM category")
     suspend fun clear()

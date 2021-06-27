@@ -5,22 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.materialestimator.R
-import com.example.materialestimator.viewModels.ProjectViewModel
+import com.example.materialestimator.models.entities.Project
+import com.example.materialestimator.viewModels.ProjectsViewModel
 import com.github.mikephil.charting.charts.PieChart
-import com.github.mikephil.charting.components.Legend
-import com.github.mikephil.charting.data.PieData
-import com.github.mikephil.charting.data.PieDataSet
-import com.github.mikephil.charting.data.PieEntry
-import com.github.mikephil.charting.formatter.PercentFormatter
 
 class ProjectFragment : Fragment() {
-    private val projectVm: ProjectViewModel by activityViewModels()
+    private val projectsVm: ProjectsViewModel by activityViewModels()
     private lateinit var toolbar: Toolbar
     private lateinit var pieChart: CustomPieChart
+    lateinit var project: Project
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,20 +37,25 @@ class ProjectFragment : Fragment() {
         val pieChartView = view.findViewById(R.id.pie_chart) as PieChart
         // build the pie chart
         pieChart = CustomPieChart(requireContext(), pieChartView)
+
+        val taskView = view.findViewById(R.id.tasks_cv) as View
+        taskView.setOnClickListener {
+            val bundle = bundleOf("Key" to project.id)
+            findNavController().navigate(R.id.action_projectFragment_to_taskFragment, bundle)
+        }
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // Get and observe the Project clicked
-        val id = arguments?.getInt("Key")
-        projectVm.get(id).observe(viewLifecycleOwner) {
-            toolbar.title = it.name
+        val projectID = arguments?.getInt("Key")
+        projectsVm.get(projectID).observe(viewLifecycleOwner) {
+            project = it
+            toolbar.title = project.name
 
         }
 
-
     }
-
 
 }

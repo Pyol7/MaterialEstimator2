@@ -36,16 +36,6 @@
             app:destination="@id/projectsFragment" />
     </fragment>
     <fragment
-        android:id="@+id/materialCalculatorFragment"
-        android:name="com.example.materialestimator.views.MaterialsCalculatorFragment"
-        android:label="Material Calculator"
-        tools:layout="@layout/fragment_materials_calculator" />
-    <fragment
-        android:id="@+id/settingsFragment"
-        android:name="com.example.materialestimator.views.SettingsFragment"
-        android:label="Settings"
-        tools:layout="@layout/fragment_settings" />
-    <fragment
         android:id="@+id/projectsFragment"
         android:name="com.example.materialestimator.views.ProjectsFragment"
         android:label="fragment_projects"
@@ -58,5 +48,26 @@
         android:id="@+id/projectFragment"
         android:name="com.example.materialestimator.views.ProjectFragment"
         android:label="ProjectFragment"
-        tools:layout="@layout/fragment_project"/>
+        tools:layout="@layout/fragment_project">
+        <action
+            android:id="@+id/action_projectFragment_to_taskFragment"
+            app:destination="@id/taskFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/taskFragment"
+        android:name="com.example.materialestimator.views.TaskFragment"
+        android:label="TaskFragment"
+        tools:layout="@layout/fragment_task">
+        <action
+            android:id="@+id/action_taskFragment_to_newTaskDialogFragment"
+            app:destination="@id/newTaskDialogFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/newTaskDialogFragment"
+        android:name="com.example.materialestimator.views.NewTaskDialogFragment"
+        android:label="NewTaskDialogFragment"
+        tools:layout="@layout/dialog_fragment_new_task">
+
+    </dialog>
+
 </navigation>

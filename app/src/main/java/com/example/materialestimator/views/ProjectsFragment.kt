@@ -15,14 +15,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.materialestimator.R
 import com.example.materialestimator.adapters.ProjectsFragmentAdapter
-import com.example.materialestimator.viewModels.ProjectViewModel
+import com.example.materialestimator.viewModels.ProjectsViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 /**
  * Displays the list of projects
  */
 class ProjectsFragment : Fragment(), ProjectsFragmentAdapter.OnItemClickListener {
-    private val projectVm: ProjectViewModel by viewModels()
+    private val vm: ProjectsViewModel by viewModels()
     private var rvAdapter: ProjectsFragmentAdapter? = null
 
     override fun onCreateView(
@@ -48,7 +48,6 @@ class ProjectsFragment : Fragment(), ProjectsFragmentAdapter.OnItemClickListener
 
         val rv = view.findViewById(R.id.projects_rv) as RecyclerView
         rv.apply {
-            layoutManager = LinearLayoutManager(layoutInflater.context)
             setHasFixedSize(true)
             rvAdapter = ProjectsFragmentAdapter()
             rvAdapter!!.setOnItemClickListener(this@ProjectsFragment)
@@ -57,7 +56,7 @@ class ProjectsFragment : Fragment(), ProjectsFragmentAdapter.OnItemClickListener
                 RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
         }
 
-        projectVm.getAll().observe(viewLifecycleOwner) {
+        vm.getAll().observe(viewLifecycleOwner) {
             rvAdapter?.setProjects(it)
         }
 
@@ -83,8 +82,7 @@ class ProjectsFragment : Fragment(), ProjectsFragmentAdapter.OnItemClickListener
     override fun onItemClick(projectID: Int) {
         // Show project fragment
         val bundle = bundleOf("Key" to projectID)
-        view?.findNavController()
-            ?.navigate(R.id.action_projectsFragment_to_projectFragment, bundle)
+        findNavController().navigate(R.id.action_projectsFragment_to_projectFragment, bundle)
     }
 
 }

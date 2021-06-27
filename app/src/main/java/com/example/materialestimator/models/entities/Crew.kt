@@ -1,15 +1,16 @@
-package com.example.materialestimator.models
+package com.example.materialestimator.models.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-@Entity
-class Category(
+@Entity(tableName = "crew")
+class Crew {
 
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    var id: Int = 0
     var name: String = ""
+    var projectid: Int = 0
 
-)
+}

@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
 import com.example.materialestimator.R
-import com.example.materialestimator.models.Project
+import com.example.materialestimator.models.entities.Project
 
 class ProjectsFragmentAdapter : RecyclerView.Adapter<ProjectsFragmentAdapter.ProjectViewHolder?>() {
     private var projects = arrayListOf<Project>()

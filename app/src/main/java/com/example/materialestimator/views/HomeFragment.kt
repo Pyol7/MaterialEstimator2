@@ -13,14 +13,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         val materialsCv = view.findViewById(R.id.home_materials_cv) as View
         materialsCv.setOnClickListener {
-            val action = HomeFragmentDirections.actionHomeFragmentToMaterialListFragment()
-            findNavController().navigate(action)
+            findNavController().navigate(R.id.action_homeFragment_to_materialListFragment)
         }
 
         val projectsCv = view.findViewById(R.id.home_projects_cv) as View
         projectsCv.setOnClickListener {
-            val action = HomeFragmentDirections.actionHomeFragmentToProjectsFragment()
-            findNavController().navigate(action)
+            findNavController().navigate(R.id.action_homeFragment_to_projectsFragment)
         }
 
     }

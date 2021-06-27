@@ -1,8 +1,8 @@
 package com.example.materialestimator.utilities
 
-import com.example.materialestimator.models.Category
-import com.example.materialestimator.models.Material
-import com.example.materialestimator.models.Project
+import com.example.materialestimator.models.entities.Category
+import com.example.materialestimator.models.entities.Material
+import com.example.materialestimator.models.entities.Project
 import com.example.materialestimator.models.materials.*
 import com.example.materialestimator.storage.local.AppDatabase
 import kotlinx.coroutines.CoroutineScope

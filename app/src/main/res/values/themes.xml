@@ -14,4 +14,21 @@
         <!-- Places context menu over toolbar. -->
         <item name="windowActionModeOverlay">true</item>
     </style>
+
+    <style name="Theme.Dialog.FullScreen" parent="Theme.MaterialComponents.Light.Dialog">
+        <!-- (1)-->
+        <item name="android:windowIsFloating">false</item>
+        <!-- (2) -->
+        <!--        <item name="android:windowBackground">@android:color/transparent</item>-->
+    </style>
+
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">
+            @anim/enter_slide_up
+        </item>
+        <item name="android:windowExitAnimation">
+            @anim/exit_slide_down
+        </item>
+    </style>
+
 </resources>

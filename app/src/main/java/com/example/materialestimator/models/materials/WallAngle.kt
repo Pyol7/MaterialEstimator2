@@ -1,6 +1,6 @@
 package com.example.materialestimator.models.materials
 
-import com.example.materialestimator.models.Material
+import com.example.materialestimator.models.entities.Material
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)

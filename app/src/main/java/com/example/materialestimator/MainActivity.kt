@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-//        this.deleteDatabase("app_database")
+//        deleteDatabase("app_database")
 
     }
 

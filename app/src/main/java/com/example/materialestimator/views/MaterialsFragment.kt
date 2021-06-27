@@ -2,6 +2,7 @@ package com.example.materialestimator.views
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.view.LayoutInflater
 import android.widget.*
@@ -12,20 +13,18 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.materialestimator.R
+import com.example.materialestimator.TAG
 import com.example.materialestimator.adapters.MaterialsFragmentListAdapter
-import com.example.materialestimator.models.Category
-import com.example.materialestimator.utilities.Converters
-import com.example.materialestimator.viewModels.CategoryViewModel
-import com.example.materialestimator.viewModels.MaterialViewModel
+import com.example.materialestimator.models.entities.Category
+import com.example.materialestimator.utilities.MoshiConverters
+import com.example.materialestimator.viewModels.MaterialsViewModel
 import kotlinx.coroutines.launch
 
 class MaterialsFragment : Fragment(R.layout.fragment_materials),
     MaterialsFragmentListAdapter.OnItemClickListener {
-    private val materialVm: MaterialViewModel by viewModels()
-    private val categoryVm: CategoryViewModel by viewModels()
+    private val vm: MaterialsViewModel by viewModels()
     private val actionModeCallback: ActionMode.Callback = ActionModeCallback()
     private var actionMode: ActionMode? = null
     private var rvAdapter: MaterialsFragmentListAdapter? = null
@@ -42,7 +41,6 @@ class MaterialsFragment : Fragment(R.layout.fragment_materials),
 
         val rv = view.findViewById(R.id.materials_rv) as RecyclerView
         rv.apply {
-            layoutManager = LinearLayoutManager(layoutInflater.context)
             setHasFixedSize(true)
             rvAdapter = MaterialsFragmentListAdapter()
             rvAdapter!!.setOnItemClickListener(this@MaterialsFragment)
@@ -55,10 +53,10 @@ class MaterialsFragment : Fragment(R.layout.fragment_materials),
         val spinnerAdapter = CategoriesAdapter(requireContext())
         spinner.adapter = spinnerAdapter
 
-        categoryVm.getAll().observe(viewLifecycleOwner) { categories ->
+        vm.getAllCategories().observe(viewLifecycleOwner) { categories ->
             spinnerAdapter.setList(categories)
-            materialVm.selectedCategoryID.observe(viewLifecycleOwner) { ID ->
-                spinner.setSelection(ID.minus(1))
+            vm.selectedCategoryID.observe(viewLifecycleOwner) { id ->
+                spinner.setSelection(id.minus(1))
             }
             spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
@@ -67,18 +65,18 @@ class MaterialsFragment : Fragment(R.layout.fragment_materials),
                     position: Int,
                     id: Long
                 ) {
-                    materialVm.setSelectedCategoryID(categories[position].id)
+                    vm.selectedCategoryID.value = categories[position].id
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
         }
 
-        materialVm.materials.observe(viewLifecycleOwner) {
+        vm.materialsByCategoryId.observe(viewLifecycleOwner) {
             rvAdapter?.setList(it)
         }
 
-        materialVm.getAllSelected().observe(viewLifecycleOwner) {
+        vm.selectedMaterials.observe(viewLifecycleOwner) {
             if (it.isNotEmpty()) {
                 if (actionMode == null) {
                     actionMode = activity?.startActionMode(actionModeCallback)
@@ -87,13 +85,14 @@ class MaterialsFragment : Fragment(R.layout.fragment_materials),
             } else {
                 actionMode?.finish()
             }
+            Log.i(TAG, it.toString())
         }
 
     }
 
     override fun onItemSelected(json: String) {
-        val material = Converters.jsonToMaterial(json)
-        materialVm.update(material)
+        val material = MoshiConverters.jsonToMaterial(json)
+        vm.update(material)
     }
 
     override fun onItemClicked(ID: Int) {
@@ -152,10 +151,10 @@ class MaterialsFragment : Fragment(R.layout.fragment_materials),
                 R.id.action_save -> {
                     // Create custom list of material
                     viewLifecycleOwner.lifecycleScope.launch {
-                        val newList = Converters.convertListOfBaseTypeToListOfSubtypes(
-                            materialVm.getAllSelectedNonLiveData()
+                        val newList = MoshiConverters.convertListOfBaseTypeToListOfSubtypes(
+                            vm.getAllSelectedNonLiveData()
                         )
-                        val json = Converters.materialListToJson(newList)
+                        val json = MoshiConverters.materialListToJson(newList)
                         val bundle = bundleOf("Key" to json)
 //                        view?.findNavController()
 //                            ?.navigate(R.id.action_materialsFragment_to_materialCalculatorFragment, bundle)
@@ -172,7 +171,7 @@ class MaterialsFragment : Fragment(R.layout.fragment_materials),
          * Called when context menu up button is pressed
          */
         override fun onDestroyActionMode(mode: ActionMode) {
-            materialVm.clearAllSelected()
+            vm.clearAllSelected()
             actionMode = null
         }
 

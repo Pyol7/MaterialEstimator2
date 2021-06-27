@@ -10,8 +10,8 @@ import androidx.annotation.Nullable
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.materialestimator.R
-import com.example.materialestimator.models.Material
-import com.example.materialestimator.utilities.Converters
+import com.example.materialestimator.models.entities.Material
+import com.example.materialestimator.utilities.MoshiConverters
 
 class MaterialsFragmentListAdapter() :
     RecyclerView.Adapter<MaterialsFragmentListAdapter.MaterialViewHolder>() {
@@ -85,7 +85,7 @@ class MaterialsFragmentListAdapter() :
                 val checkBox = it as CheckBox
                 val m = materials[absoluteAdapterPosition]
                 m.selected = checkBox.isChecked
-                val json = Converters.materialToJson(m)
+                val json = MoshiConverters.materialToJson(m)
                 listener?.onItemSelected(json)
             }
             /**

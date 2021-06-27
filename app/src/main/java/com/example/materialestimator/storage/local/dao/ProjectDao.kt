@@ -2,7 +2,7 @@ package com.example.materialestimator.storage.local.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.materialestimator.models.Project
+import com.example.materialestimator.models.entities.Project
 
 @Dao
 interface ProjectDao {
@@ -16,10 +16,10 @@ interface ProjectDao {
     suspend fun insert(project: Project?)
 
     @Update
-    suspend fun update(project: Project?);
+    suspend fun update(project: Project?)
 
     @Update
-    suspend fun updateAll(projects: List<Project>);
+    suspend fun updateAll(projects: List<Project>)
 
     @Query("DELETE FROM project")
     suspend fun clear()

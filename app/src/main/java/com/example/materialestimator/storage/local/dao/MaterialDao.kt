@@ -2,7 +2,7 @@ package com.example.materialestimator.storage.local.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.materialestimator.models.Material
+import com.example.materialestimator.models.entities.Material
 
 /**
  * Only LiveData or suspend functions allowed.
@@ -29,10 +29,10 @@ interface MaterialDao{
     suspend fun insert(material: Material?)
 
     @Update
-    suspend fun update(material: Material?);
+    suspend fun update(material: Material?)
 
     @Update
-    suspend fun updateAll(materials: List<Material>);
+    suspend fun updateAll(materials: List<Material>)
 
     @Query("DELETE FROM material")
     suspend fun clearAll()
