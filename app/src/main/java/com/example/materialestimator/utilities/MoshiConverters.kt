@@ -51,7 +51,7 @@ class MoshiConverters {
         @TypeConverter
         @FromJson
         @JvmStatic
-        fun jsonToMaterialList(json: String): List<Material>? {
+        fun jsonToMaterialList(json: String?): List<Material>? {
             val type = Types.newParameterizedType(List::class.java, Material::class.java)
             val adapter = moshiSubtypes.adapter<List<Material>>(type)
             return adapter.fromJson(json)

@@ -85,7 +85,6 @@ class MaterialsFragment : Fragment(R.layout.fragment_materials),
             } else {
                 actionMode?.finish()
             }
-            Log.i(TAG, it.toString())
         }
 
     }
@@ -99,7 +98,7 @@ class MaterialsFragment : Fragment(R.layout.fragment_materials),
         actionMode?.finish()
         val bundle = bundleOf("Key" to ID)
         view?.findNavController()
-            ?.navigate(R.id.action_materialListFragment_to_materialFragment, bundle)
+            ?.navigate(R.id.action_materialsFragment_to_materialFragment, bundle)
     }
 
     /**
@@ -150,14 +149,14 @@ class MaterialsFragment : Fragment(R.layout.fragment_materials),
             return when (item.itemId) {
                 R.id.action_save -> {
                     // Create custom list of material
-                    viewLifecycleOwner.lifecycleScope.launch {
+                    lifecycleScope.launch {
                         val newList = MoshiConverters.convertListOfBaseTypeToListOfSubtypes(
                             vm.getAllSelectedNonLiveData()
                         )
                         val json = MoshiConverters.materialListToJson(newList)
                         val bundle = bundleOf("Key" to json)
-//                        view?.findNavController()
-//                            ?.navigate(R.id.action_materialsFragment_to_materialCalculatorFragment, bundle)
+                        view?.findNavController()
+                            ?.navigate(R.id.action_global_taskMaterialFragment, bundle)
                     }
                     mode.finish()
                     true

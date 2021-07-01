@@ -3,18 +3,20 @@ package com.example.materialestimator.views
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
-import android.widget.Button
-import android.widget.DatePicker
-import android.widget.EditText
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
+import android.view.*
+import android.widget.SeekBar
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import com.example.materialestimator.R
+import com.example.materialestimator.TAG
+import com.example.materialestimator.databinding.DialogFragmentNewTaskBinding
 import com.example.materialestimator.models.entities.Task
+import com.example.materialestimator.utilities.Converters
 import com.example.materialestimator.viewModels.ProjectsViewModel
+import com.google.android.material.textfield.TextInputEditText
 import java.util.*
 
 
@@ -22,15 +24,20 @@ import java.util.*
  * The key to to building a full screen dialog is to apply a new style which extends
  * a dialog style and includes the windowIsFloating = false attribute.
  */
-class NewTaskDialogFragment: DialogFragment(), OnDateSetListener {
-    private lateinit var startDateEt: EditText
-    private lateinit var startDate: Date
+class NewTaskDialogFragment : DialogFragment(R.layout.dialog_fragment_new_task) {
     private val vm: ProjectsViewModel by viewModels()
-    private val months =
-        arrayOf("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
+
+    // The backing field is needed for:
+    // To avoid non null assertions everywhere the binding instance is used.
+    // To avoid a memory leak by setting the binding instance to null in onDestroyView().
+    private var _binding: DialogFragmentNewTaskBinding? = null
+    private val binding get() = _binding!!
+    private var startDateEt: TextInputEditText? = null
+    private var completionDateEt: TextInputEditText? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Set style required for full screen dialog
         setStyle(STYLE_NORMAL, R.style.Theme_Dialog_FullScreen)
     }
 
@@ -39,67 +46,134 @@ class NewTaskDialogFragment: DialogFragment(), OnDateSetListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val v = inflater.inflate(R.layout.dialog_fragment_new_task, container, false)
-        startDateEt = v.findViewById<EditText>(R.id.start_date_et)
-        startDateEt.setOnClickListener{
-            showDatePickerDialog()
-        }
-        val addBtn = v.findViewById<Button>(R.id.add_task_btn)
-        addBtn.setOnClickListener {
-            createNewTask(v)
-            closeDialog()
-        }
-        val cancelBtn = v.findViewById<Button>(R.id.cancel_task_btn)
-        cancelBtn.setOnClickListener {
-            closeDialog()
-        }
-        return v
+        _binding = DialogFragmentNewTaskBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(
         view: View,
         savedInstanceState: Bundle?
     ) {
-        // Add animations and set view resize when keyboard appears to show buttons.
-        val window = requireDialog().window
-        window?.setWindowAnimations(R.style.DialogAnimation)
-        window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+        // Set up toolbar
+        val toolbar = binding.addTaskToolbar
+        toolbar.setNavigationOnClickListener { dismiss() }
+        toolbar.title = "New Task"
+        toolbar.inflateMenu(R.menu.add_task_full_screen_menu)
+        toolbar.setOnMenuItemClickListener() {
+            createAndInsetNewTask(view)
+            true
+        }
+
+        // Set dialog animation and allow scrolling of view when softKeyboard is visible
+        requireDialog().window?.setWindowAnimations(R.style.DialogAnimation)
+        requireDialog().window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+
+        val seekBar = binding.seekBar
+        val percentCompletion = binding.taskPercentCompletedEt
+        percentCompletion.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (s?.isEmpty() == true) {
+                    percentCompletion.setText("0")
+                    percentCompletion.selectAll()
+                }
+                if (s?.isNotEmpty() == true) {
+                    seekBar.progress = Integer.parseInt(s.toString())
+                    if (Integer.parseInt(s.toString()) > 100) {
+                        percentCompletion.setText("100")
+                    }
+                    percentCompletion.setSelection(percentCompletion.text.toString().length)
+                } else {
+                    seekBar.progress = 0
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
+        seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                if (fromUser) {
+                    percentCompletion.setText(progress.toString())
+                }
+            }
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+        })
+
+        // Set clickListeners that shows the appropriate date picker
+        startDateEt = binding.taskStartDateEt
+        startDateEt!!.setOnClickListener {
+            showDatePickerDialog(startDateDatePickerListener)
+        }
+        completionDateEt = binding.taskCompletionDateEt
+        completionDateEt!!.setOnClickListener {
+            showDatePickerDialog(completionDateDatePickerListener)
+        }
 
     }
 
-    private fun createNewTask(v: View) {
-        val projectID = arguments?.getInt("Key")
-        val title = v.findViewById<EditText>(R.id.task_title_et).text.toString()
-        val desc = v.findViewById<EditText>(R.id.task_desc_et).text.toString()
-        val task = Task(title = title, desc = desc, startDate = startDate , projectid = projectID!!)
+    // Assigns the DatePickerDialog.onDateSetListener as an anonymous object to a variable.
+    private val startDateDatePickerListener = OnDateSetListener { _, year, month, dayOfMonth ->
+        startDateEt?.setText(Converters.dateToString(year, month, dayOfMonth))
+    }
+
+    private val completionDateDatePickerListener = OnDateSetListener { _, year, month, dayOfMonth ->
+        completionDateEt?.setText(Converters.dateToString(year, month, dayOfMonth))
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun createAndInsetNewTask(v: View) {
+        val title = binding.taskTitleEt.text.toString()
+        val description = binding.taskDescEt.text.toString()
+        val estimatedDays = Converters.stringToInteger(binding.taskEstimatedDaysEt.text.toString())
+        val estimatedHours =
+            Converters.stringToInteger(binding.taskEstimatedHoursEt.text.toString())
+        val skilledLabour = Converters.stringToInteger(binding.taskSkilledLabourEt.text.toString())
+        val unSkilledLabour =
+            Converters.stringToInteger(binding.taskUnskilledLabourEt.text.toString())
+        val percentCompleted =
+            Converters.stringToInteger(binding.taskPercentCompletedEt.text.toString())
+        val completionDate = Converters.stringToDate(binding.taskCompletionDateEt.text.toString())
+        val startDate = Converters.stringToDate(binding.taskStartDateEt.text.toString())
+        val projectId = arguments?.getInt("Key")
+
+        val task = Task(
+            title = title,
+            description = description,
+            estimatedDays = estimatedDays,
+            estimatedHours = estimatedHours,
+            skilledLabour = skilledLabour,
+            unSkilledLabour = unSkilledLabour,
+            percentCompleted = percentCompleted,
+            startDate = startDate,
+            completionDate = completionDate,
+            projectId = projectId!!
+        )
         vm.insertTask(task)
-        closeDialog()
+        dismiss()
     }
 
-    private fun closeDialog() {
-        requireDialog().dismiss()
-    }
-
-    private fun showDatePickerDialog() {
+    /**
+     * Displays the date picker dialog with the current date and passes
+     * the selected date to the listener.
+     */
+    private fun showDatePickerDialog(listener: OnDateSetListener) {
+        // Get the current date
         val cal = Calendar.getInstance()
         val year = cal[Calendar.YEAR]
         val month = cal[Calendar.MONTH]
         val day = cal[Calendar.DAY_OF_MONTH]
-        val dialog = DatePickerDialog(
+        // Start the date picker with the current date
+        DatePickerDialog(
             requireContext(),
-            this,
+            listener,
             year, month, day
-        )
-        dialog.show()
-    }
-
-    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        // create date object using date set by user
-        val calendar = Calendar.getInstance()
-        calendar.set(year, month, dayOfMonth)
-        startDate = calendar.time
-        startDateEt.setText(startDate.toString())
-
+        ).show()
     }
 
 }

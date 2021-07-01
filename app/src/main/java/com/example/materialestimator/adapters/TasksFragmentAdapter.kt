@@ -9,7 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.materialestimator.R
 import com.example.materialestimator.models.entities.Task
 
-class TaskFragmentAdapter : RecyclerView.Adapter<TaskFragmentAdapter.ViewHolder?>() {
+
+class TasksFragmentAdapter : RecyclerView.Adapter<TasksFragmentAdapter.ViewHolder?>() {
     private var tasks = arrayListOf<Task>()
     private var listener: OnItemClickListener? = null
 
@@ -36,14 +37,18 @@ class TaskFragmentAdapter : RecyclerView.Adapter<TaskFragmentAdapter.ViewHolder?
     override fun onBindViewHolder(@NonNull holder: ViewHolder, position: Int) {
         val task = tasks[position]
         holder.titleTv.text = task.title
-//        holder.descTv.text = task.desc
+        val formattedText: String = String.format(
+            holder.itemView.resources.getString(R.string.append_percent),
+            task.percentCompleted,
+        )
+        holder.percentCompletedTv.text = formattedText
     }
 
     override fun getItemCount() = tasks.size
 
     inner class ViewHolder(@NonNull itemView: View) : RecyclerView.ViewHolder(itemView) {
         val titleTv: TextView = itemView.findViewById(R.id.task_title_tv)
-//        val descTv: TextView = itemView.findViewById(R.id.task_desc_tv)
+        val percentCompletedTv: TextView = itemView.findViewById(R.id.task_percent_completed_tv)
 
         init {
             itemView.setOnClickListener {

@@ -6,35 +6,31 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/task_title_tv"
+        android:id="@+id/task_material_name_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
         android:layout_marginBottom="8dp"
         android:ellipsize="end"
         android:maxLines="1"
-        android:text="75%"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textStyle="normal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/task_percent_completed_tv"
+        app:layout_constraintEnd_toStartOf="@+id/task_material_qty_tv"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Title" />
+        tools:text="Ultra Light Gypsum Board" />
 
     <TextView
-        android:id="@+id/task_percent_completed_tv"
+        android:id="@+id/task_material_qty_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
-        android:text="75%"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="42 pcs" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

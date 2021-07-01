@@ -6,6 +6,30 @@
     app:startDestination="@id/homeFragment">
 
     <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.materialestimator.views.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_projectsFragment"
+            app:destination="@id/projectsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/materialsFragment"
+        android:name="com.example.materialestimator.views.MaterialsFragment"
+        android:label="Materials"
+        tools:layout="@layout/fragment_materials">
+        <action
+            android:id="@+id/action_materialsFragment_to_materialFragment"
+            app:destination="@id/materialFragment" />
+    </fragment>
+
+    <action
+        android:id="@+id/action_global_materialsFragment"
+        app:destination="@id/materialsFragment" />
+
+    <fragment
         android:id="@+id/materialFragment"
         android:name="com.example.materialestimator.views.MaterialFragment"
         android:label="Material"
@@ -14,60 +38,50 @@
             android:name="ID"
             app:argType="integer" />
     </fragment>
-    <fragment
-        android:id="@+id/materialsFragment"
-        android:name="com.example.materialestimator.views.MaterialsFragment"
-        android:label="Materials"
-        tools:layout="@layout/fragment_materials">
-        <action
-            android:id="@+id/action_materialListFragment_to_materialFragment"
-            app:destination="@id/materialFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.example.materialestimator.views.HomeFragment"
-        android:label="Home"
-        tools:layout="@layout/fragment_home">
-        <action
-            android:id="@+id/action_homeFragment_to_materialListFragment"
-            app:destination="@id/materialsFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_projectsFragment"
-            app:destination="@id/projectsFragment" />
-    </fragment>
+
     <fragment
         android:id="@+id/projectsFragment"
         android:name="com.example.materialestimator.views.ProjectsFragment"
         android:label="fragment_projects"
-        tools:layout="@layout/fragment_projects" >
+        tools:layout="@layout/fragment_projects">
         <action
             android:id="@+id/action_projectsFragment_to_projectFragment"
             app:destination="@id/projectFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/projectFragment"
         android:name="com.example.materialestimator.views.ProjectFragment"
         android:label="ProjectFragment"
         tools:layout="@layout/fragment_project">
         <action
-            android:id="@+id/action_projectFragment_to_taskFragment"
-            app:destination="@id/taskFragment" />
+            android:id="@+id/action_projectFragment_to_tasksFragment"
+            app:destination="@id/tasksFragment" />
     </fragment>
     <fragment
-        android:id="@+id/taskFragment"
+        android:id="@+id/tasksFragment"
+        android:name="com.example.materialestimator.views.TasksFragment"
+        android:label="TasksFragment"
+        tools:layout="@layout/fragment_tasks">
+        <action
+            android:id="@+id/action_tasksFragment_to_TaskFragment"
+            app:destination="@id/TaskFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/TaskFragment"
         android:name="com.example.materialestimator.views.TaskFragment"
         android:label="TaskFragment"
-        tools:layout="@layout/fragment_task">
-        <action
-            android:id="@+id/action_taskFragment_to_newTaskDialogFragment"
-            app:destination="@id/newTaskDialogFragment" />
-    </fragment>
-    <dialog
-        android:id="@+id/newTaskDialogFragment"
-        android:name="com.example.materialestimator.views.NewTaskDialogFragment"
-        android:label="NewTaskDialogFragment"
-        tools:layout="@layout/dialog_fragment_new_task">
+        tools:layout="@layout/fragment_task" />
 
-    </dialog>
+    <fragment
+        android:id="@+id/taskMaterialFragment"
+        android:name="com.example.materialestimator.views.TaskMaterialFragment"
+        android:label="TaskMaterialFragment"
+        tools:layout="@layout/fragment_task_material" />
+
+    <action
+        android:id="@+id/action_global_taskMaterialFragment"
+        app:destination="@id/taskMaterialFragment" />
 
 </navigation>

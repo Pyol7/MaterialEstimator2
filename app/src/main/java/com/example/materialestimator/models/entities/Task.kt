@@ -7,15 +7,21 @@ import java.util.*
 
 @JsonClass(generateAdapter = true)
 @Entity(tableName = "task")
-class Task (
+class Task(
 
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0,
     var title: String = "",
-    var desc: String = "",
+    var description: String = "",
+    var estimatedDays: Int? = 0,
+    var estimatedHours: Int? = 0,
+    var skilledLabour: Int? = 0,
+    var unSkilledLabour: Int? = 0,
+    var percentCompleted: Int? = 0,
     var startDate: Date? = null,
-    var endDate: Date? = null,
-    var percentCompleted: Int = 0,
-    var projectid: Int = 0
+    var completionDate: Date? = null,
+    var projectId: Int = 0
 
-)
+) {
+
+}

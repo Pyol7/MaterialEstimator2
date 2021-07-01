@@ -15,13 +15,11 @@
         <item name="windowActionModeOverlay">true</item>
     </style>
 
+    <!-- Full Screen Dialog -->
     <style name="Theme.Dialog.FullScreen" parent="Theme.MaterialComponents.Light.Dialog">
-        <!-- (1)-->
         <item name="android:windowIsFloating">false</item>
-        <!-- (2) -->
-        <!--        <item name="android:windowBackground">@android:color/transparent</item>-->
+        <item name="android:windowBackground">@android:color/white</item>
     </style>
-
     <style name="DialogAnimation">
         <item name="android:windowEnterAnimation">
             @anim/enter_slide_up
@@ -30,5 +28,6 @@
             @anim/exit_slide_down
         </item>
     </style>
+
 
 </resources>

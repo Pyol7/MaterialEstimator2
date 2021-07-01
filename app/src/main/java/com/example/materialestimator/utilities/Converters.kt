@@ -1,14 +1,11 @@
 package com.example.materialestimator.utilities
 
+import android.util.Log
 import androidx.room.TypeConverter
-import com.example.materialestimator.models.entities.Material
-import com.example.materialestimator.models.materials.*
-import com.squareup.moshi.FromJson
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.ToJson
-import com.squareup.moshi.Types
+import com.example.materialestimator.TAG
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -23,15 +20,56 @@ class Converters {
 
     companion object {
 
-        fun DateToDDMMMYYYY(date: Date): String? {
-            val df = SimpleDateFormat("dd MMM yyyy", Locale.US)
-            return df.format(date)
+        fun dateToCalendar(date: Date): Calendar {
+            val calendar = Calendar.getInstance()
+            calendar.time = date
+            return calendar
         }
 
-        @TypeConverter
-        @JvmStatic
-        fun fromTimestamp(value: Long?): Date? {
-            return value?.let { Date(it) }
+        fun calendarToDate(calendar: Calendar): Date {
+            return calendar.time
+        }
+
+        /**
+         * getDateInstance() defaults to Apr 06, 1974 format and uses the phones locale setting.
+         * See https://developer.android.com/reference/java/text/DateFormat
+         * for other available string formatting methods
+         */
+        fun dateToString(date: Date): String {
+            // format date based on the phones locale setting
+            return DateFormat.getDateInstance().format(date)
+        }
+
+        fun dateToString(year: Int, month: Int, day: Int): String {
+            // Create Calender
+            val calendar = Calendar.getInstance()
+            calendar.set(year, month, day)
+            // convert Calender to Date
+            val date = calendar.time
+            // format date based on the phones locale setting
+            return DateFormat.getDateInstance().format(date)
+        }
+
+        fun stringToDate(string: String?): Date? {
+            var date: Date? = null
+                if (string?.isNotEmpty() == true) {
+                    try {
+                        date = DateFormat.getDateInstance().parse(string)
+                    } catch (e: Exception) {
+                        Log.i(TAG, e.toString())
+                    }
+                } else {
+                    return null
+                }
+            return date
+        }
+
+        fun stringToInteger(string: String?): Int? {
+            return if (string?.isNotEmpty() == true) {
+                Integer.parseInt(string)
+            } else {
+                null
+            }
         }
 
         @TypeConverter
@@ -40,6 +78,11 @@ class Converters {
             return date?.time
         }
 
+        @TypeConverter
+        @JvmStatic
+        fun timestampToDate(timeStamp: Long?): Date? {
+            return timeStamp?.let { Date(it) }
+        }
 
     }
 }

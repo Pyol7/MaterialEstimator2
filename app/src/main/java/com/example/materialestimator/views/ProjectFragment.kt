@@ -41,7 +41,7 @@ class ProjectFragment : Fragment() {
         val taskView = view.findViewById(R.id.tasks_cv) as View
         taskView.setOnClickListener {
             val bundle = bundleOf("Key" to project.id)
-            findNavController().navigate(R.id.action_projectFragment_to_taskFragment, bundle)
+            findNavController().navigate(R.id.action_projectFragment_to_tasksFragment, bundle)
         }
         return view
     }
