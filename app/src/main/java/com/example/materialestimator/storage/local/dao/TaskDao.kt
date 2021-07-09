@@ -12,8 +12,8 @@ interface TaskDao {
     @Query("SELECT * FROM task")
     fun getAll() : LiveData<List<Task>>
 
-    @Query("SELECT * FROM task WHERE projectid = :ID")
-    fun getAllTaskByProjectId(ID: Int) : LiveData<List<Task>>
+    @Query("SELECT * FROM task WHERE projectID = :projectID")
+    fun getAllTaskByProjectID(projectID: Int) : LiveData<List<Task>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(task: Task?)

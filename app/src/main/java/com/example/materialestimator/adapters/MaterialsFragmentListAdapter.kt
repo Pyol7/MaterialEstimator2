@@ -1,5 +1,6 @@
 package com.example.materialestimator.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,12 +11,19 @@ import androidx.annotation.Nullable
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.materialestimator.R
+import com.example.materialestimator.TAG
 import com.example.materialestimator.models.entities.Material
 import com.example.materialestimator.utilities.MoshiConverters
+import com.example.materialestimator.viewModels.MaterialsViewModel
+import kotlin.reflect.jvm.internal.impl.util.Check
 
+/**
+ * Responsible for:
+ * Displaying the list of material.
+ * Notifying the listener (MaterialsFragment) when a material is selected or clicked.
+ */
 class MaterialsFragmentListAdapter() :
     RecyclerView.Adapter<MaterialsFragmentListAdapter.MaterialViewHolder>() {
-
     private var materials = arrayListOf<Material>()
     private var listener: OnItemClickListener? = null
 
@@ -83,10 +91,11 @@ class MaterialsFragmentListAdapter() :
              */
             selectedCb.setOnClickListener {
                 val checkBox = it as CheckBox
-                val m = materials[absoluteAdapterPosition]
-                m.selected = checkBox.isChecked
-                val json = MoshiConverters.materialToJson(m)
-                listener?.onItemSelected(json)
+                materials[absoluteAdapterPosition].apply {
+                    this.selected = checkBox.isChecked
+                    val json = MoshiConverters.materialToJson(this)
+                    listener?.onItemSelected(json)
+                }
             }
             /**
              * Send the Material ID to the listener.

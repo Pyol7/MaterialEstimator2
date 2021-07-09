@@ -14,8 +14,9 @@ import com.example.materialestimator.storage.local.dao.MaterialDao
 import com.example.materialestimator.storage.local.dao.ProjectDao
 import com.example.materialestimator.storage.local.dao.TaskDao
 import com.example.materialestimator.utilities.Converters
-import com.example.materialestimator.utilities.DataSource
+import com.example.materialestimator.utilities.CategoriesAndMaterialsDataSource
 import com.example.materialestimator.utilities.MoshiConverters
+import com.example.materialestimator.utilities.ProjectsAndTasksDataSource
 
 @Database(
     entities = [
@@ -72,7 +73,8 @@ abstract class AppDatabase : RoomDatabase() {
         private val roomCallback = object : Callback() {
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
-                DataSource.populateDatabase(INSTANCE!!)
+                CategoriesAndMaterialsDataSource.insertCategoryAndMaterials(INSTANCE!!)
+                ProjectsAndTasksDataSource.insertProjectsAndTasks(INSTANCE!!)
                 Log.i(TAG, "DB first run...")
             }
         }

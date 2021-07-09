@@ -2,13 +2,16 @@ package com.example.materialestimator.utilities
 
 import androidx.room.TypeConverter
 import com.example.materialestimator.models.entities.Material
+import com.example.materialestimator.models.entities.Task
 import com.example.materialestimator.models.materials.*
 import com.squareup.moshi.FromJson
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.ToJson
 import com.squareup.moshi.Types
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
+import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import java.util.*
 
 /**
  * Type converters for Moshi and Room.
@@ -22,6 +25,56 @@ class MoshiConverters {
 
     companion object {
 
+        private var moshiSubtypes: Moshi = Moshi.Builder()
+            .add(
+                PolymorphicJsonAdapterFactory.of(Material::class.java, "subtype")
+                    .withSubtype(CChannel::class.java, "CChannel")
+                    .withSubtype(Furring::class.java, "Furring")
+                    .withSubtype(JointCompound::class.java, "JointCompound")
+                    .withSubtype(Panel::class.java, "Panel")
+                    .withSubtype(Screw::class.java, "Screw")
+                    .withSubtype(Tee::class.java, "Tee")
+                    .withSubtype(WallAngle::class.java, "WallAngle")
+                    .withSubtype(Lumber::class.java, "Lumber")
+                    .withSubtype(Steel::class.java, "Steel")
+            )
+            .addLast(KotlinJsonAdapterFactory())
+            .build()
+
+        private val moshi = Moshi.Builder().add(Date::class.java, Rfc3339DateJsonAdapter()).build()
+
+        @TypeConverter
+        @ToJson
+        @JvmStatic
+        fun dateToJson(date: Date): String {
+            val adapter = moshi.adapter(Date::class.java)
+            return adapter.nullSafe().toJson(date)
+        }
+
+        @TypeConverter
+        @FromJson
+        @JvmStatic
+        fun jsonToDate(json: String): Date? {
+            val adapter = moshi.adapter(Date::class.java)
+            return adapter.nullSafe().fromJson(json)
+        }
+
+        @TypeConverter
+        @ToJson
+        @JvmStatic
+        fun taskToJson(task: Task): String {
+            val adapter = moshi.adapter(Task::class.java)
+            return adapter.nullSafe().toJson(task)
+        }
+
+        @TypeConverter
+        @FromJson
+        @JvmStatic
+        fun jsonToTask(json: String): Task? {
+            val adapter = moshi.adapter(Task::class.java)
+            return adapter.nullSafe().fromJson(json)
+        }
+
         @TypeConverter
         @ToJson
         @JvmStatic
@@ -32,7 +85,7 @@ class MoshiConverters {
         }
 
         @TypeConverter
-        @ToJson
+        @FromJson
         @JvmStatic
         fun jsonToMaterial(json: String): Material? {
             val adapter = moshiSubtypes.adapter(Material::class.java)
@@ -54,7 +107,7 @@ class MoshiConverters {
         fun jsonToMaterialList(json: String?): List<Material>? {
             val type = Types.newParameterizedType(List::class.java, Material::class.java)
             val adapter = moshiSubtypes.adapter<List<Material>>(type)
-            return adapter.fromJson(json)
+            return adapter.fromJson(json!!)
         }
 
         fun convertBaseTypeToSubtype(baseType: Material): Material? {
@@ -72,21 +125,7 @@ class MoshiConverters {
             return subTypesList
         }
 
-        private var moshiSubtypes: Moshi = Moshi.Builder()
-            .add(
-                PolymorphicJsonAdapterFactory.of(Material::class.java, "subtype")
-                    .withSubtype(CChannel::class.java, "CChannel")
-                    .withSubtype(Furring::class.java, "Furring")
-                    .withSubtype(JointCompound::class.java, "JointCompound")
-                    .withSubtype(Panel::class.java, "Panel")
-                    .withSubtype(Screw::class.java, "Screw")
-                    .withSubtype(Tee::class.java, "Tee")
-                    .withSubtype(WallAngle::class.java, "WallAngle")
-                    .withSubtype(Lumber::class.java, "Lumber")
-                    .withSubtype(Steel::class.java, "Steel")
-            )
-            .addLast(KotlinJsonAdapterFactory())
-            .build()
+
 
     }
 }

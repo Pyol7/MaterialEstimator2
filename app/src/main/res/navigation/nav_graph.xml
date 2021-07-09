@@ -64,24 +64,14 @@
         android:label="TasksFragment"
         tools:layout="@layout/fragment_tasks">
         <action
-            android:id="@+id/action_tasksFragment_to_TaskFragment"
-            app:destination="@id/TaskFragment" />
+            android:id="@+id/action_tasksFragment_to_taskViewPagerFragment"
+            app:destination="@id/taskViewPagerFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/TaskFragment"
-        android:name="com.example.materialestimator.views.TaskFragment"
-        android:label="TaskFragment"
-        tools:layout="@layout/fragment_task" />
-
-    <fragment
-        android:id="@+id/taskMaterialFragment"
-        android:name="com.example.materialestimator.views.TaskMaterialFragment"
-        android:label="TaskMaterialFragment"
-        tools:layout="@layout/fragment_task_material" />
-
-    <action
-        android:id="@+id/action_global_taskMaterialFragment"
-        app:destination="@id/taskMaterialFragment" />
+        android:id="@+id/taskViewPagerFragment"
+        android:name="com.example.materialestimator.views.task.TaskViewPagerFragment"
+        android:label="TaskViewPagerFragment"
+        tools:layout="@layout/fragment_task_view_pager" />
 
 </navigation>

@@ -9,14 +9,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class DataSource {
+class CategoriesAndMaterialsDataSource {
     companion object {
 
-        fun populateDatabase(instance: AppDatabase) {
+        fun insertCategoryAndMaterials(instance: AppDatabase) {
             CoroutineScope(Dispatchers.IO).launch {
-                createProjectList().forEach {
-                    instance.projectDao().insert(it)
-                }
                 createCategoryList().forEach {
                     instance.categoryDao().insert(it)
                 }
@@ -30,17 +27,6 @@ class DataSource {
                     instance.materialDao().insert(it)
                 }
             }
-        }
-
-        private fun createProjectList(): ArrayList<Project> {
-            val list = ArrayList<Project>()
-            list.add(Project(name = "108 Ridge Road Maraval", image = "project_1"))
-            list.add(Project(name = "54 Lange Park Chaguanas", image = "project_2"))
-            list.add(Project(name = "23 Main Road Tobago", image = "project_3"))
-            list.add(Project(name = "Anglais Road Cumana", image = "project_4"))
-            list.add(Project(name = "La Riviera Apt 1K", image = "project_5"))
-            list.add(Project(name = "1/4 mm Toco Road Toco", image = "project_6"))
-            return list
         }
 
         private fun createCategoryList(): ArrayList<Category> {

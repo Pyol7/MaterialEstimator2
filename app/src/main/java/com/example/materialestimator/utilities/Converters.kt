@@ -3,15 +3,13 @@ package com.example.materialestimator.utilities
 import android.util.Log
 import androidx.room.TypeConverter
 import com.example.materialestimator.TAG
-import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import java.text.DateFormat
-import java.text.SimpleDateFormat
 import java.util.*
 
 /**
  * Type converters for Room.
  * @TypeConverter is used by Room.
+ * @ToJson is used by Moshi.
  * @JvmStatic Will throw an InvocationTargetException without it. Its needed by java to changes
  * MaterialTypeConverter.Companion().toJson() to MaterialTypeConverter.toJson()
  */
@@ -40,7 +38,7 @@ class Converters {
             return DateFormat.getDateInstance().format(date)
         }
 
-        fun dateToString(year: Int, month: Int, day: Int): String {
+        fun yearMonthDayToString(year: Int, month: Int, day: Int): String {
             // Create Calender
             val calendar = Calendar.getInstance()
             calendar.set(year, month, day)

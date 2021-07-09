@@ -10,17 +10,18 @@ import java.util.*
 class Task(
 
     @PrimaryKey(autoGenerate = true)
-    var id: Int = 0,
+    var ID: Int = 0,
     var title: String = "",
     var description: String = "",
+    var startDate: Date? = null,
     var estimatedDays: Int? = 0,
     var estimatedHours: Int? = 0,
+    var completionDate: Date? = null,
+    var percentCompleted: Int? = 0,
     var skilledLabour: Int? = 0,
     var unSkilledLabour: Int? = 0,
-    var percentCompleted: Int? = 0,
-    var startDate: Date? = null,
-    var completionDate: Date? = null,
-    var projectId: Int = 0
+    val materials: List<Material>? = null,
+    var projectID: Int? = 0
 
 ) {
 

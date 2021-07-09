@@ -45,9 +45,9 @@ class ProjectsViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    fun getAllTasksByProjectId(ID: Int): LiveData<List<Task>> {
-        return taskDao.getAllTaskByProjectId(ID)
-    }
+//    fun getAllTasksByProjectId(ID: Int): LiveData<List<Task>> {
+//        return taskDao.getAllTaskByProjectId(ID)
+//    }
 
     fun insertTask(task: Task) {
         viewModelScope.launch(Dispatchers.IO) {

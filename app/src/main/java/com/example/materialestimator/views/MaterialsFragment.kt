@@ -9,8 +9,8 @@ import android.widget.*
 import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -20,25 +20,24 @@ import com.example.materialestimator.adapters.MaterialsFragmentListAdapter
 import com.example.materialestimator.models.entities.Category
 import com.example.materialestimator.utilities.MoshiConverters
 import com.example.materialestimator.viewModels.MaterialsViewModel
-import kotlinx.coroutines.launch
 
 class MaterialsFragment : Fragment(R.layout.fragment_materials),
     MaterialsFragmentListAdapter.OnItemClickListener {
+//    private val actionModeCallback: ActionMode.Callback = ActionModeCallback()
     private val vm: MaterialsViewModel by viewModels()
-    private val actionModeCallback: ActionMode.Callback = ActionModeCallback()
-    private var actionMode: ActionMode? = null
     private var rvAdapter: MaterialsFragmentListAdapter? = null
+    private var actionMode: ActionMode? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Use this fragment's toolbar and provide all functionality
+        // Setup the toolbar
         val toolbar = view.findViewById(R.id.materials_toolbar) as Toolbar
         toolbar.inflateMenu(R.menu.general_toolbar_menu)
         toolbar.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
 
+        // Setup the recyclerview
         val rv = view.findViewById(R.id.materials_rv) as RecyclerView
         rv.apply {
             setHasFixedSize(true)
@@ -49,6 +48,7 @@ class MaterialsFragment : Fragment(R.layout.fragment_materials),
                 RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
         }
 
+        // Set up filters
         val spinner = view.findViewById(R.id.spinner) as Spinner
         val spinnerAdapter = CategoriesAdapter(requireContext())
         spinner.adapter = spinnerAdapter
@@ -72,30 +72,40 @@ class MaterialsFragment : Fragment(R.layout.fragment_materials),
             }
         }
 
+        //Display filtered materials
         vm.materialsByCategoryId.observe(viewLifecycleOwner) {
             rvAdapter?.setList(it)
         }
 
+        //Show or hide the context bar based on observing the selected materials
         vm.selectedMaterials.observe(viewLifecycleOwner) {
             if (it.isNotEmpty()) {
-                if (actionMode == null) {
-                    actionMode = activity?.startActionMode(actionModeCallback)
-                }
-                actionMode?.title = it.size.toString()
+//                if (actionMode == null) {
+//                    actionMode = activity?.startActionMode(actionModeCallback)
+//                }
+                toolbar.title = "${it.size} selected"
             } else {
-                actionMode?.finish()
+                toolbar.title = "Select materials"
             }
         }
 
     }
 
+    /**
+     * Receives the selected material from MaterialsFragmentListAdapter() and update its record
+     * in the db.
+     */
     override fun onItemSelected(json: String) {
         val material = MoshiConverters.jsonToMaterial(json)
         vm.update(material)
     }
 
+    /**
+     * Receives the selected material ID from MaterialsFragmentListAdapter() and navigates to
+     * that material.
+     */
     override fun onItemClicked(ID: Int) {
-        actionMode?.finish()
+//        actionMode?.finish()
         val bundle = bundleOf("Key" to ID)
         view?.findNavController()
             ?.navigate(R.id.action_materialsFragment_to_materialFragment, bundle)
@@ -148,29 +158,20 @@ class MaterialsFragment : Fragment(R.layout.fragment_materials),
 
             return when (item.itemId) {
                 R.id.action_save -> {
-                    // Create custom list of material
-                    lifecycleScope.launch {
-                        val newList = MoshiConverters.convertListOfBaseTypeToListOfSubtypes(
-                            vm.getAllSelectedNonLiveData()
-                        )
-                        val json = MoshiConverters.materialListToJson(newList)
-                        val bundle = bundleOf("Key" to json)
-                        view?.findNavController()
-                            ?.navigate(R.id.action_global_taskMaterialFragment, bundle)
-                    }
-                    mode.finish()
+                    mode.finish() // Calls onDestroyActionMode()
+                    // Notify user of saved list
+
                     true
                 }
-
                 else -> false
             }
         }
 
         /**
-         * Called when context menu up button is pressed
+         * Internally called when context menu up button is pressed
          */
         override fun onDestroyActionMode(mode: ActionMode) {
-            vm.clearAllSelected()
+//            vm.deSelectAll()
             actionMode = null
         }
 
