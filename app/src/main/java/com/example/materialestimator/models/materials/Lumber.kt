@@ -18,7 +18,7 @@ class Lumber(
     unitprice = unitprice,
     length = length,
     image = image,
-    categoryid = categoryid
+    categoryid = categoryid,
 ) {
 
     fun calcQty(length: Double, width: Double): Double {

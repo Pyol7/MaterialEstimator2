@@ -1,7 +1,6 @@
 package com.example.materialestimator.utilities
 
-import com.example.materialestimator.models.entities.Category
-import com.example.materialestimator.models.entities.Material
+import com.example.materialestimator.models.entities.Employee
 import com.example.materialestimator.models.entities.Project
 import com.example.materialestimator.models.entities.Task
 import com.example.materialestimator.models.materials.*
@@ -9,16 +8,18 @@ import com.example.materialestimator.storage.local.AppDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.time.LocalDate
 import java.util.*
 
-class ProjectsAndTasksDataSource {
+class DataSource1 {
     companion object {
 
         fun insertProjectsAndTasks(instance: AppDatabase) {
             CoroutineScope(Dispatchers.IO).launch {
                 projects.forEach {
                     instance.projectDao().insert(it)
+                }
+                employees.forEach {
+                    instance.employeeDao().insert(it)
                 }
                 tasks.forEach {
                     instance.taskDao().insert(it)
@@ -35,6 +36,21 @@ class ProjectsAndTasksDataSource {
             Project(name = "1/4 mm Toco Road Toco", image = "project_6")
         )
 
+        private val employees = arrayListOf(
+            Employee(
+                name = "Levy Romero",
+                image = "levy"
+            ),
+            Employee(
+                name = "Justin Romero",
+                image = "justin"
+            ),
+            Employee(
+                name = "Eva Romero",
+                image = "eva"
+            )
+        )
+
         private val tasks = arrayListOf(
             Task(
                 title = "Protect site",
@@ -43,8 +59,20 @@ class ProjectsAndTasksDataSource {
                 estimatedDays = 1,
                 estimatedHours = 6,
                 completionDate = Date(),
-                skilledLabour = 2,
-                unSkilledLabour = 2,
+                employees = arrayListOf(
+                    Employee(
+                        name = "Levy Romero",
+                        image = "levy"
+                    ),
+                    Employee(
+                        name = "Justin Romero",
+                        image = "justin"
+                    ),
+                    Employee(
+                        name = "Eva Romero",
+                        image = "eva"
+                    )
+                ),
                 materials = arrayListOf(
                     Panel(
                         name = "Ultra Light Gypsum Panel",
@@ -79,8 +107,16 @@ class ProjectsAndTasksDataSource {
                 estimatedDays = 2,
                 estimatedHours = 2,
                 completionDate = Date(),
-                skilledLabour = 1,
-                unSkilledLabour = 3,
+                employees = arrayListOf(
+                    Employee(
+                        name = "Justin Romero",
+                        image = "justin"
+                    ),
+                    Employee(
+                        name = "Eva Romero",
+                        image = "eva"
+                    )
+                ),
                 materials = arrayListOf(
                     CChannel(
                         name = "C Channel",

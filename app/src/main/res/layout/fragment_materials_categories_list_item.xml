@@ -6,28 +6,15 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/materials_category_id_tv"
+        android:id="@+id/materials_category_name_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginStart="4dp"
         android:layout_marginBottom="4dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        tools:text="ID" />
-
-    <TextView
-        android:id="@+id/materials_category_name_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/materials_category_id_tv"
-        app:layout_constraintStart_toEndOf="@+id/materials_category_id_tv"
         tools:text="Name" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,5 @@
 package com.example.materialestimator.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,16 +7,15 @@ import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
 import com.example.materialestimator.R
-import com.example.materialestimator.TAG
 import com.example.materialestimator.models.entities.Task
 
 
-class TasksFragmentAdapter : RecyclerView.Adapter<TasksFragmentAdapter.ViewHolder?>() {
+class TasksFragmentRVAdapter : RecyclerView.Adapter<TasksFragmentRVAdapter.ViewHolder?>() {
     private var tasks = arrayListOf<Task>()
     private var listener: OnItemClickListener? = null
 
     interface OnItemClickListener {
-        fun onItemClick(taskID: Int)
+        fun onItemClick(task: Task)
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
@@ -56,7 +54,7 @@ class TasksFragmentAdapter : RecyclerView.Adapter<TasksFragmentAdapter.ViewHolde
             itemView.setOnClickListener {
                 // When a task is selected, send the task ID to the listeners
                 listener?.onItemClick(
-                    tasks[absoluteAdapterPosition].ID
+                    tasks[absoluteAdapterPosition]
                 )
             }
         }

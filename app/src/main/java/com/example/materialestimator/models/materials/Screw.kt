@@ -18,7 +18,7 @@ class Screw(
     unitprice = unitprice,
     coverage = coverage,
     image = image,
-    categoryid = categoryid
+    categoryid = categoryid,
 ) {
 
     fun calcQty(length: Double, width: Double): Double {

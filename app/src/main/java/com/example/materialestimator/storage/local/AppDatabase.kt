@@ -9,14 +9,11 @@ import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.materialestimator.TAG
 import com.example.materialestimator.models.entities.*
-import com.example.materialestimator.storage.local.dao.CategoryDao
-import com.example.materialestimator.storage.local.dao.MaterialDao
-import com.example.materialestimator.storage.local.dao.ProjectDao
-import com.example.materialestimator.storage.local.dao.TaskDao
+import com.example.materialestimator.storage.local.dao.*
 import com.example.materialestimator.utilities.Converters
-import com.example.materialestimator.utilities.CategoriesAndMaterialsDataSource
+import com.example.materialestimator.utilities.DataSource2
 import com.example.materialestimator.utilities.MoshiConverters
-import com.example.materialestimator.utilities.ProjectsAndTasksDataSource
+import com.example.materialestimator.utilities.DataSource1
 
 @Database(
     entities = [
@@ -24,7 +21,7 @@ import com.example.materialestimator.utilities.ProjectsAndTasksDataSource
         Material::class,
         Project::class,
         Task::class,
-        Crew::class,
+        Employee::class,
         Equipment::class,
         Photo::class,
         File::class,
@@ -42,6 +39,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun projectDao(): ProjectDao
     abstract fun categoryDao(): CategoryDao
     abstract fun materialDao(): MaterialDao
+    abstract fun employeeDao(): EmployeeDao
     abstract fun taskDao(): TaskDao
 
     companion object {
@@ -73,8 +71,8 @@ abstract class AppDatabase : RoomDatabase() {
         private val roomCallback = object : Callback() {
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
-                CategoriesAndMaterialsDataSource.insertCategoryAndMaterials(INSTANCE!!)
-                ProjectsAndTasksDataSource.insertProjectsAndTasks(INSTANCE!!)
+                DataSource2.insertCategoryAndMaterials(INSTANCE!!)
+                DataSource1.insertProjectsAndTasks(INSTANCE!!)
                 Log.i(TAG, "DB first run...")
             }
         }

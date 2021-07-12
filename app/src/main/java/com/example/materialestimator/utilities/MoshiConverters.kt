@@ -1,8 +1,8 @@
 package com.example.materialestimator.utilities
 
 import androidx.room.TypeConverter
+import com.example.materialestimator.models.entities.Employee
 import com.example.materialestimator.models.entities.Material
-import com.example.materialestimator.models.entities.Task
 import com.example.materialestimator.models.materials.*
 import com.squareup.moshi.FromJson
 import com.squareup.moshi.Moshi
@@ -46,38 +46,6 @@ class MoshiConverters {
         @TypeConverter
         @ToJson
         @JvmStatic
-        fun dateToJson(date: Date): String {
-            val adapter = moshi.adapter(Date::class.java)
-            return adapter.nullSafe().toJson(date)
-        }
-
-        @TypeConverter
-        @FromJson
-        @JvmStatic
-        fun jsonToDate(json: String): Date? {
-            val adapter = moshi.adapter(Date::class.java)
-            return adapter.nullSafe().fromJson(json)
-        }
-
-        @TypeConverter
-        @ToJson
-        @JvmStatic
-        fun taskToJson(task: Task): String {
-            val adapter = moshi.adapter(Task::class.java)
-            return adapter.nullSafe().toJson(task)
-        }
-
-        @TypeConverter
-        @FromJson
-        @JvmStatic
-        fun jsonToTask(json: String): Task? {
-            val adapter = moshi.adapter(Task::class.java)
-            return adapter.nullSafe().fromJson(json)
-        }
-
-        @TypeConverter
-        @ToJson
-        @JvmStatic
         fun materialToJson(material: Material): String {
             val moshi = Moshi.Builder().build()
             val adapter = moshi.adapter(Material::class.java)
@@ -91,6 +59,25 @@ class MoshiConverters {
             val adapter = moshiSubtypes.adapter(Material::class.java)
             return adapter.fromJson(json)
         }
+
+        @TypeConverter
+        @ToJson
+        @JvmStatic
+        fun employeesToJson(employees: List<Employee>?): String {
+            val type = Types.newParameterizedType(List::class.java, Employee::class.java)
+            val adapter = moshi.adapter<List<Employee>>(type)
+            return adapter.toJson(employees)
+        }
+
+        @TypeConverter
+        @FromJson
+        @JvmStatic
+        fun jsonToEmployees(json: String?): List<Employee>? {
+            val type = Types.newParameterizedType(List::class.java, Employee::class.java)
+            val adapter = moshi.adapter<List<Employee>>(type)
+            return adapter.fromJson(json!!)
+        }
+
 
         @TypeConverter
         @ToJson

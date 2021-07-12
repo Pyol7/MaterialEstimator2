@@ -4,6 +4,7 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.materialestimator.TAG
+import com.example.materialestimator.models.entities.Material
 import com.example.materialestimator.models.entities.Task
 import com.example.materialestimator.storage.local.AppDatabase
 import kotlinx.coroutines.Dispatchers
@@ -11,10 +12,18 @@ import kotlinx.coroutines.launch
 
 class TaskViewModel(application: Application) : AndroidViewModel(application) {
     private val taskDao = AppDatabase.getInstance(application).taskDao()
-    var selectedTask = MutableLiveData<Task>()
+    lateinit var selectedTask: Task
 
-    init {
-        Log.i(TAG, "TaskViewModel init: selectedTask = $selectedTask")
+    fun updateMaterialOnSelectedTaskMaterials(material: Material){
+        val t = selectedTask.materials
+        t?.set(t.indexOf(material), material)
+        update(selectedTask)
+    }
+
+    fun addMaterialsToSelectedTaskMaterials(materials: List<Material>){
+        for (m in materials){
+            selectedTask.materials?.add(m)
+        }
     }
 
     fun getAllTaskByProjectID(projectID: Int): LiveData<List<Task>> {
@@ -47,11 +56,6 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch(Dispatchers.IO) {
             taskDao.clear()
         }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        Log.i(TAG, "TaskViewModel Cleared: selectedTask = $selectedTask")
     }
 
 }

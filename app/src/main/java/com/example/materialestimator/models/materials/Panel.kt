@@ -20,7 +20,7 @@ class Panel(
     length = length,
     width = width,
     image = image,
-    categoryid = categoryid
+    categoryid = categoryid,
 ) {
 
     fun calcQty(length: Double, width: Double): Double {

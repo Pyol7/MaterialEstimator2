@@ -5,21 +5,52 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.example.materialestimator.R
 import com.example.materialestimator.TAG
+import com.example.materialestimator.adapters.ProjectsFragmentAdapter
+import com.example.materialestimator.adapters.TaskLabourFragmentRVAdapter
 import com.example.materialestimator.viewModels.TaskViewModel
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class TaskLabourFragment: Fragment(R.layout.fragment_task_labour) {
+class TaskLabourFragment : Fragment(R.layout.fragment_task_labour) {
     // This vm is scoped to TaskFragment so it is initialized and cleared with it.
-    private val vm: TaskViewModel by viewModels({ requireParentFragment() })
+    private val taskVm: TaskViewModel by activityViewModels()
+    private var rvAdapter: TaskLabourFragmentRVAdapter? = null
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_task_labour, container, false)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // Get the selected task set on the vm by TasksFragment() and display the list of labour
-        vm.selectedTask.observe(viewLifecycleOwner) {
-            Log.i(TAG, "TaskLabourFragment: selectedTask = $it")
+
+        val rv = view.findViewById(R.id.task_labour_rv) as RecyclerView
+        rv.apply {
+            setHasFixedSize(true)
+            rvAdapter = TaskLabourFragmentRVAdapter()
+            adapter = rvAdapter
         }
+        taskVm.selectedTask.employees?.let { rvAdapter?.setEmployees(it) }
+
+        // Setup a listener on the fab to show the add project fragment
+        val fab = view.findViewById(R.id.add_labour_fab) as FloatingActionButton
+        fab.setOnClickListener {
+            Toast.makeText(context, "Create new employee...", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        taskVm.update(taskVm.selectedTask)
     }
 }

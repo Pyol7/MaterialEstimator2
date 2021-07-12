@@ -5,46 +5,60 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="8dp"
     tools:context=".views.MaterialsFragment">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/materials_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:navigationIcon="?attr/homeAsUpIndicator"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <Spinner
-        android:id="@+id/spinner"
-        style="@android:style/Widget.Spinner.DropDown"
+        android:id="@+id/materials_spinner"
+        style="@android:style/Widget.Material.Spinner.Underlined"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/materials_counter_tv"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/materials_toolbar" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/fragment_materials_categories_list_item"
+        android:dropDownVerticalOffset= "40dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/materials_rv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="32dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/spinner"
-        tools:listitem="@layout/fragment_materials_list_item"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        app:layout_constraintTop_toBottomOf="@id/materials_spinner"
+        tools:listitem="@layout/fragment_materials_list_item" />
+
+    <Button
+        android:id="@+id/materials_add_btn"
+        style="@android:style/Widget.Material.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="Add"
+        app:iconPadding="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/materials_counter_tv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/materials_counter_tv" />
+
+    <TextView
+        android:id="@+id/materials_counter_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:padding="8dp"
+        android:text="0"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintBottom_toBottomOf="@+id/materials_spinner"
+        app:layout_constraintEnd_toStartOf="@+id/materials_add_btn"
+        app:layout_constraintTop_toTopOf="@+id/materials_spinner" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

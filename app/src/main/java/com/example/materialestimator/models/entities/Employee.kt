@@ -5,12 +5,12 @@ import androidx.room.PrimaryKey
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-@Entity(tableName = "crew")
-class Crew {
+@Entity(tableName = "employee")
+class Employee(
 
     @PrimaryKey(autoGenerate = true)
-    var id: Int = 0
-    var name: String = ""
-    var projectid: Int = 0
+    var id: Int = 0,
+    var name: String = "",
+    var image: String = ""
 
-}
+)

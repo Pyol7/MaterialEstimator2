@@ -17,10 +17,10 @@ open class Material(
     open var length: Double = 0.0,
     open var width: Double = 0.0,
     open var coverage: Double = 0.0,
+    var qty: Int? = 0,
     var image: String = "",
     var categoryid: Int = 0,
     var selected: Boolean = false
-
 ){
 
     open fun getOptionalProperties(): ArrayList<Pair<String, String>> {
@@ -37,6 +37,20 @@ open class Material(
         return "Material(name=$name, selected=$selected)"
     }
 
+    override fun equals(other: Any?): Boolean {
+        val obj = other as Material
+
+        if (this.id != obj.id){
+            return false
+        }
+
+        if (this.name != obj.name){
+            return false
+        }
+
+        return true
+    }
+
     operator fun component1() = id
     operator fun component2() = subtype
     operator fun component3() = name
@@ -47,5 +61,11 @@ open class Material(
     operator fun component8() = image
     operator fun component9() = categoryid
     operator fun component10() = selected
+
+    override fun hashCode(): Int {
+        var result = id
+        result = 31 * result + name.hashCode()
+        return result
+    }
 
 }

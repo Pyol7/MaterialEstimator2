@@ -9,7 +9,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class CategoriesAndMaterialsDataSource {
+class DataSource2 {
     companion object {
 
         fun insertCategoryAndMaterials(instance: AppDatabase) {

@@ -18,9 +18,8 @@ class Task(
     var estimatedHours: Int? = 0,
     var completionDate: Date? = null,
     var percentCompleted: Int? = 0,
-    var skilledLabour: Int? = 0,
-    var unSkilledLabour: Int? = 0,
-    val materials: List<Material>? = null,
+    var employees: MutableList<Employee>? = null,
+    var materials: MutableList<Material>? = null,
     var projectID: Int? = 0
 
 ) {

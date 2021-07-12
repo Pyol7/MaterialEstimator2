@@ -1,6 +1,5 @@
 package com.example.materialestimator.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,18 +10,15 @@ import androidx.annotation.Nullable
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.materialestimator.R
-import com.example.materialestimator.TAG
 import com.example.materialestimator.models.entities.Material
 import com.example.materialestimator.utilities.MoshiConverters
-import com.example.materialestimator.viewModels.MaterialsViewModel
-import kotlin.reflect.jvm.internal.impl.util.Check
 
 /**
  * Responsible for:
  * Displaying the list of material.
  * Notifying the listener (MaterialsFragment) when a material is selected or clicked.
  */
-class MaterialsFragmentListAdapter() :
+class MaterialsFragmentListAdapter:
     RecyclerView.Adapter<MaterialsFragmentListAdapter.MaterialViewHolder>() {
     private var materials = arrayListOf<Material>()
     private var listener: OnItemClickListener? = null
@@ -121,31 +117,21 @@ class MaterialDiffCallback(
     override fun getNewListSize(): Int = newList.size
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        val itemsAreSame =
-            oldList[oldItemPosition].id == newList[newItemPosition].id
-
-//            Log.i(TAG, "areItemsTheSame = $itemsAreSame")
-
-        return itemsAreSame
+        return oldList[oldItemPosition].id == newList[newItemPosition].id
     }
 
     override fun areContentsTheSame(oldPosition: Int, newPosition: Int): Boolean {
         val (_, _, name, unitprice, length, width, coverage, image, materialCategoryID, selected) = oldList[oldPosition]
         val (_, _, name1, unitprice1, length1, width1, coverage1, image1, materialCategoryID1, selected1) = newList[newPosition]
 
-        val contentIsSame =
-            name == name1 &&
-                    unitprice == unitprice1 &&
-                    length == length1 &&
-                    width == width1 &&
-                    coverage == coverage1 &&
-                    image == image1 &&
-                    materialCategoryID == materialCategoryID1 &&
-                    selected == selected1
-
-//            Log.i(TAG, "areContentsTheSame = $contentIsSame")
-
-        return contentIsSame
+        return name == name1 &&
+                unitprice == unitprice1 &&
+                length == length1 &&
+                width == width1 &&
+                coverage == coverage1 &&
+                image == image1 &&
+                materialCategoryID == materialCategoryID1 &&
+                selected == selected1
     }
 
     @Nullable

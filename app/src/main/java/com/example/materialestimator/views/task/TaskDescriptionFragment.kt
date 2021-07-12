@@ -6,26 +6,27 @@ import android.util.Log
 import android.view.View
 import android.widget.EditText
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import com.example.materialestimator.R
 import com.example.materialestimator.TAG
 import com.example.materialestimator.utilities.Converters
 import com.example.materialestimator.viewModels.TaskViewModel
-import com.google.android.material.textfield.TextInputEditText
 import java.util.*
 
 class TaskDescriptionFragment : Fragment(R.layout.fragment_task_description) {
     // Initialize the vm using the parent fragment's scope (ie TaskFragment())
-    private val vm: TaskViewModel by viewModels( { requireParentFragment()} )
+    private val taskVm: TaskViewModel by activityViewModels()
+    private lateinit var titleEt: EditText
+    private lateinit var descriptionEt: EditText
+    private lateinit var startDateEt: EditText
+    private lateinit var estimatedDaysEt: EditText
+    private lateinit var estimatedHoursEt: EditText
+    private lateinit var completionDateEt: EditText
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val titleEt = view.findViewById<EditText>(R.id.task_title_et)
-        val descriptionEt = view.findViewById<EditText>(R.id.task_desc_et)
-        val startDateEt = view.findViewById<EditText>(R.id.task_start_date_et)
-        val estimatedDaysEt = view.findViewById<EditText>(R.id.task_estimated_days_et)
-        val estimatedHoursEt = view.findViewById<EditText>(R.id.task_estimated_hours_et)
-        val completionDateEt = view.findViewById<EditText>(R.id.task_completion_date_et)
+
+        initFields(view)
 
         /**
          * Passing the OnDateSetListener as an anonymous object into showDatePickerDialog() allows
@@ -45,14 +46,39 @@ class TaskDescriptionFragment : Fragment(R.layout.fragment_task_description) {
             }
         }
 
-        vm.selectedTask.observe(viewLifecycleOwner) { selectedTask ->
-            Log.i(TAG, "TaskDescriptionFragment: selectedTask = $selectedTask")
-            titleEt.setText(selectedTask.title)
-            descriptionEt.setText(selectedTask.description)
-            startDateEt.setText(selectedTask.startDate?.let { Converters.dateToString(it) })
-            estimatedDaysEt.setText(selectedTask.estimatedDays.toString())
-            estimatedHoursEt.setText(selectedTask.estimatedHours.toString())
+        val t = taskVm.selectedTask
+            titleEt.setText(t.title)
+            descriptionEt.setText(t.description)
+            startDateEt.setText(t.startDate?.let { Converters.dateToString(it) })
+            estimatedDaysEt.setText(t.estimatedDays.toString())
+            estimatedHoursEt.setText(t.estimatedHours.toString())
+            completionDateEt.setText(t.completionDate?.let { Converters.dateToString(it) })
         }
+
+
+    override fun onPause() {
+        super.onPause()
+        saveAllFields()
+    }
+
+    private fun initFields(view: View){
+        titleEt = view.findViewById(R.id.task_title_et)
+        descriptionEt = view.findViewById(R.id.task_desc_et)
+        startDateEt = view.findViewById(R.id.task_start_date_et)
+        estimatedDaysEt = view.findViewById(R.id.task_estimated_days_et)
+        estimatedHoursEt = view.findViewById(R.id.task_estimated_hours_et)
+        completionDateEt = view.findViewById(R.id.task_completion_date_et)
+    }
+
+    private fun saveAllFields(){
+        val t = taskVm.selectedTask
+        t.title = titleEt.text.toString()
+        t.description = descriptionEt.text.toString()
+        t.startDate = Converters.stringToDate(startDateEt.text.toString())
+        t.estimatedDays = Converters.stringToInteger(estimatedDaysEt.text.toString())
+        t.estimatedHours = Converters.stringToInteger(estimatedHoursEt.text.toString())
+        t.completionDate = Converters.stringToDate(completionDateEt.text.toString())
+        taskVm.update(t)
     }
 
     /**
