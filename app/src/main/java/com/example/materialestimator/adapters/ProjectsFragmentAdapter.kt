@@ -60,7 +60,7 @@ class ProjectsFragmentAdapter : RecyclerView.Adapter<ProjectsFragmentAdapter.Pro
         init {
             itemView.setOnClickListener {
                 listener?.onItemClick(
-                    projects[absoluteAdapterPosition].id
+                    projects[absoluteAdapterPosition].ID
                 )
             }
         }

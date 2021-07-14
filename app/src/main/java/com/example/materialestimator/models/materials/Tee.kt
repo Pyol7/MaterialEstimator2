@@ -9,7 +9,7 @@ class Tee(
     unitprice: Double,
     length: Double,
     image: String,
-    categoryid: Int
+    categoryID: Int
 
 ) : Material(
     subtype = "Tee",
@@ -17,7 +17,7 @@ class Tee(
     unitprice = unitprice,
     length = length,
     image = image,
-    categoryid = categoryid,
+    categoryID = categoryID,
 ) {
 
     fun calcQty(length: Double, width: Double): Double {

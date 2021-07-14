@@ -59,7 +59,7 @@ class MaterialsFragment : Fragment(R.layout.fragment_materials),
                     position: Int,
                     id: Long
                 ) {
-                    materialsVm.selectedCategoryID.value = categories[position].id
+                    materialsVm.selectedCategoryID.value = categories[position].ID
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {}

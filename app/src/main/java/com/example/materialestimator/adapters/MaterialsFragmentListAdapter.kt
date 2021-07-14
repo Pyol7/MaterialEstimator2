@@ -97,7 +97,7 @@ class MaterialsFragmentListAdapter:
              * Send the Material ID to the listener.
              */
             listItemView.setOnClickListener {
-                listener?.onItemClicked(materials[absoluteAdapterPosition].id)
+                listener?.onItemClicked(materials[absoluteAdapterPosition].ID)
             }
         }
 
@@ -117,7 +117,7 @@ class MaterialDiffCallback(
     override fun getNewListSize(): Int = newList.size
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldList[oldItemPosition].id == newList[newItemPosition].id
+        return oldList[oldItemPosition].ID == newList[newItemPosition].ID
     }
 
     override fun areContentsTheSame(oldPosition: Int, newPosition: Int): Boolean {

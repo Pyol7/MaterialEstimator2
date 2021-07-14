@@ -1,8 +1,7 @@
 package com.example.materialestimator.utilities
 
-import com.example.materialestimator.models.entities.Category
+import com.example.materialestimator.models.entities.MaterialCategory
 import com.example.materialestimator.models.entities.Material
-import com.example.materialestimator.models.entities.Project
 import com.example.materialestimator.models.materials.*
 import com.example.materialestimator.storage.local.AppDatabase
 import kotlinx.coroutines.CoroutineScope
@@ -15,7 +14,7 @@ class DataSource2 {
         fun insertCategoryAndMaterials(instance: AppDatabase) {
             CoroutineScope(Dispatchers.IO).launch {
                 createCategoryList().forEach {
-                    instance.categoryDao().insert(it)
+                    instance.materialCategoryDao().insert(it)
                 }
                 createDrywallMaterialList().forEach {
                     instance.materialDao().insert(it)
@@ -29,11 +28,11 @@ class DataSource2 {
             }
         }
 
-        private fun createCategoryList(): ArrayList<Category> {
-            val list = ArrayList<Category>()
-            list.add(Category(name = "Drywall"))
-            list.add(Category(name = "Wood"))
-            list.add(Category(name = "Steel"))
+        private fun createCategoryList(): ArrayList<MaterialCategory> {
+            val list = ArrayList<MaterialCategory>()
+            list.add(MaterialCategory(name = "Drywall"))
+            list.add(MaterialCategory(name = "Wood"))
+            list.add(MaterialCategory(name = "Steel"))
             return list
         }
 
@@ -46,7 +45,7 @@ class DataSource2 {
                     length = 8.0,
                     width = 4.0,
                     image = "ultralight_gypsum_panel",
-                    categoryid = 1
+                    categoryID = 1
                 )
             )
             list.add(
@@ -56,7 +55,7 @@ class DataSource2 {
                     length = 2.0,
                     width = 2.0,
                     image = "acoustical_ceiling_tile",
-                    categoryid = 1
+                    categoryID = 1
                 )
             )
             list.add(
@@ -65,7 +64,7 @@ class DataSource2 {
                     unitprice = 15.00,
                     length = 12.0,
                     image = "furring_channel",
-                    categoryid = 1
+                    categoryID = 1
                 )
             )
             list.add(
@@ -74,7 +73,7 @@ class DataSource2 {
                     unitprice = 8.0,
                     length = 10.0,
                     image = "gypsum_ceiling_wall_angle",
-                    categoryid = 1
+                    categoryID = 1
                 )
             )
             list.add(
@@ -83,7 +82,7 @@ class DataSource2 {
                     unitprice = 50.0,
                     length = 16.0,
                     image = "gypsum_c_channel",
-                    categoryid = 1
+                    categoryID = 1
                 )
             )
             list.add(
@@ -92,7 +91,7 @@ class DataSource2 {
                     unitprice = 50.0,
                     coverage = 150.0,
                     image = "all_purpose_joint_compound",
-                    categoryid = 1
+                    categoryID = 1
                 )
             )
             list.add(
@@ -101,7 +100,7 @@ class DataSource2 {
                     unitprice = 0.15,
                     coverage = 40.0,
                     image = "drywall_screw",
-                    categoryid = 1
+                    categoryID = 1
                 )
             )
             list.add(
@@ -110,7 +109,7 @@ class DataSource2 {
                     unitprice = 8.0,
                     length = 10.0,
                     image = "acoustical_wall_angle",
-                    categoryid = 1
+                    categoryID = 1
                 )
             )
             list.add(
@@ -119,7 +118,7 @@ class DataSource2 {
                     unitprice = 25.0,
                     length = 12.0,
                     image = "cross_tee",
-                    categoryid = 1
+                    categoryID = 1
                 )
             )
             list.add(
@@ -128,7 +127,7 @@ class DataSource2 {
                     unitprice = 5.0,
                     length = 4.0,
                     image = "cross_tee",
-                    categoryid = 1
+                    categoryID = 1
                 )
             )
             list.add(
@@ -137,7 +136,7 @@ class DataSource2 {
                     unitprice = 3.50,
                     length = 2.0,
                     image = "cross_tee",
-                    categoryid = 1
+                    categoryID = 1
                 )
             )
             return list
@@ -152,7 +151,7 @@ class DataSource2 {
                     length = 8.0,
                     width = 4.0,
                     image = "plywood",
-                    categoryid = 2
+                    categoryID = 2
                 )
             )
             list.add(
@@ -161,7 +160,7 @@ class DataSource2 {
                     unitprice = 35.00,
                     length = 10.00,
                     image = "lumber_2x4",
-                    categoryid = 2
+                    categoryID = 2
                 )
             )
             list.add(
@@ -170,7 +169,7 @@ class DataSource2 {
                     unitprice = 75.00,
                     length = 12.00,
                     image = "lumber_4x4",
-                    categoryid = 2
+                    categoryID = 2
                 )
             )
             return list
@@ -185,7 +184,7 @@ class DataSource2 {
                     length = 8.0,
                     width = 4.0,
                     image = "steel_corr_sheet",
-                    categoryid = 3
+                    categoryID = 3
                 )
             )
             list.add(
@@ -194,7 +193,7 @@ class DataSource2 {
                     unitprice = 35.00,
                     length = 20.00,
                     image = "steel_rhs",
-                    categoryid = 3
+                    categoryID = 3
                 )
             )
             list.add(
@@ -203,7 +202,7 @@ class DataSource2 {
                     unitprice = 75.00,
                     length = 20.00,
                     image = "steel_angle",
-                    categoryid = 3
+                    categoryID = 3
                 )
             )
             return list

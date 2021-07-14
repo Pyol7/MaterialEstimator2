@@ -10,7 +10,7 @@ class Screw(
     unitprice: Double,
     coverage: Double,
     image: String,
-    categoryid: Int
+    categoryID: Int
 
 ) : Material(
     subtype = "Screw",
@@ -18,7 +18,7 @@ class Screw(
     unitprice = unitprice,
     coverage = coverage,
     image = image,
-    categoryid = categoryid,
+    categoryID = categoryID,
 ) {
 
     fun calcQty(length: Double, width: Double): Double {

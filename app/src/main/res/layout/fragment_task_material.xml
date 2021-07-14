@@ -57,7 +57,7 @@
             android:padding="8dp">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/task_material_rv"
+                android:id="@+id/task_materials_rv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

@@ -9,7 +9,7 @@ import com.squareup.moshi.JsonClass
 class Employee(
 
     @PrimaryKey(autoGenerate = true)
-    var id: Int = 0,
+    var ID: Int = 0,
     var name: String = "",
     var image: String = ""
 

@@ -1,10 +1,8 @@
 package com.example.materialestimator.viewModels
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
-import com.example.materialestimator.TAG
-import com.example.materialestimator.models.entities.Category
+import com.example.materialestimator.models.entities.MaterialCategory
 import com.example.materialestimator.models.entities.Material
 import com.example.materialestimator.storage.local.AppDatabase
 import kotlinx.coroutines.Dispatchers
@@ -21,7 +19,7 @@ import kotlinx.coroutines.launch
  */
 class MaterialsViewModel(application: Application) : AndroidViewModel(application) {
     private val materialDao = AppDatabase.getInstance(application).materialDao()
-    private val categoryDao = AppDatabase.getInstance(application).categoryDao()
+    private val categoryDao = AppDatabase.getInstance(application).materialCategoryDao()
 
     var selectedCategoryID = MutableLiveData<Int>()
 
@@ -48,7 +46,7 @@ class MaterialsViewModel(application: Application) : AndroidViewModel(applicatio
         emitSource(materialDao.getAllSelected())
     }
 
-    fun getAllCategories(): LiveData<List<Category>> {
+    fun getAllCategories(): LiveData<List<MaterialCategory>> {
         return categoryDao.getAll()
     }
 

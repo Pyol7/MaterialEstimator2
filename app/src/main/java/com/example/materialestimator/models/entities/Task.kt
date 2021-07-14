@@ -18,10 +18,9 @@ class Task(
     var estimatedHours: Int? = 0,
     var completionDate: Date? = null,
     var percentCompleted: Int? = 0,
-    var employees: MutableList<Employee>? = null,
     var materials: MutableList<Material>? = null,
+    var employees: MutableList<Employee>? = null,
+    var tools: MutableList<Tool>? = null,
     var projectID: Int? = 0
 
-) {
-
-}
+)

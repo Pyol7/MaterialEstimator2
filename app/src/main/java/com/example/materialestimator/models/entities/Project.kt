@@ -10,10 +10,8 @@ import kotlin.collections.ArrayList
 class Project(
 
     @PrimaryKey(autoGenerate = true)
-    var id: Int = 0,
+    var ID: Int = 0,
     var name: String = "",
-    var image: String = "",
+    var image: String = ""
 
-) {
-
-}
+)

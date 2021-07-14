@@ -3,6 +3,7 @@ package com.example.materialestimator.utilities
 import androidx.room.TypeConverter
 import com.example.materialestimator.models.entities.Employee
 import com.example.materialestimator.models.entities.Material
+import com.example.materialestimator.models.entities.Tool
 import com.example.materialestimator.models.materials.*
 import com.squareup.moshi.FromJson
 import com.squareup.moshi.Moshi
@@ -46,6 +47,39 @@ class MoshiConverters {
         @TypeConverter
         @ToJson
         @JvmStatic
+        fun materialsToJson(materials: List<Material>): String {
+            val type = Types.newParameterizedType(List::class.java, Material::class.java)
+            val adapter = moshiSubtypes.adapter<List<Material>>(type)
+            return adapter.toJson(materials)
+        }
+
+        @TypeConverter
+        @FromJson
+        @JvmStatic
+        fun jsonToMaterials(json: String?): List<Material>? {
+            val type = Types.newParameterizedType(List::class.java, Material::class.java)
+            val adapter = moshiSubtypes.adapter<List<Material>>(type)
+            return adapter.fromJson(json!!)
+        }
+
+        fun convertBaseTypeToSubtype(baseType: Material): Material? {
+            return jsonToMaterial(materialToJson(baseType))
+        }
+
+        fun convertListOfBaseTypeToListOfSubtypes(baseTypeList: List<Material>): List<Material> {
+            val subTypesList = arrayListOf<Material>()
+            for (baseType in baseTypeList) {
+                val subType = convertBaseTypeToSubtype(baseType)
+                if (subType != null) {
+                    subTypesList.add(subType)
+                }
+            }
+            return subTypesList
+        }
+
+        @TypeConverter
+        @ToJson
+        @JvmStatic
         fun materialToJson(material: Material): String {
             val moshi = Moshi.Builder().build()
             val adapter = moshi.adapter(Material::class.java)
@@ -78,39 +112,26 @@ class MoshiConverters {
             return adapter.fromJson(json!!)
         }
 
-
         @TypeConverter
         @ToJson
         @JvmStatic
-        fun materialListToJson(materials: List<Material>): String {
-            val type = Types.newParameterizedType(List::class.java, Material::class.java)
-            val adapter = moshiSubtypes.adapter<List<Material>>(type)
-            return adapter.toJson(materials)
+        fun toolsToJson(tools: List<Tool>?): String {
+            val type = Types.newParameterizedType(List::class.java, Tool::class.java)
+            val adapter = moshi.adapter<List<Tool>>(type)
+            return adapter.toJson(tools)
         }
 
         @TypeConverter
         @FromJson
         @JvmStatic
-        fun jsonToMaterialList(json: String?): List<Material>? {
-            val type = Types.newParameterizedType(List::class.java, Material::class.java)
-            val adapter = moshiSubtypes.adapter<List<Material>>(type)
+        fun jsonToTools(json: String?): List<Tool>? {
+            val type = Types.newParameterizedType(List::class.java, Tool::class.java)
+            val adapter = moshi.adapter<List<Tool>>(type)
             return adapter.fromJson(json!!)
         }
 
-        fun convertBaseTypeToSubtype(baseType: Material): Material? {
-            return jsonToMaterial(materialToJson(baseType))
-        }
 
-        fun convertListOfBaseTypeToListOfSubtypes(baseTypeList: List<Material>): List<Material> {
-            val subTypesList = arrayListOf<Material>()
-            for (baseType in baseTypeList) {
-                val subType = convertBaseTypeToSubtype(baseType)
-                if (subType != null) {
-                    subTypesList.add(subType)
-                }
-            }
-            return subTypesList
-        }
+
 
 
 

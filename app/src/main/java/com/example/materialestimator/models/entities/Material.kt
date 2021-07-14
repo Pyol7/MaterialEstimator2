@@ -10,7 +10,7 @@ import com.squareup.moshi.JsonClass
 open class Material(
 
     @PrimaryKey(autoGenerate = true)
-    var id: Int = 0,
+    var ID: Int = 0,
     val subtype: String = "",
     open var name: String = "",
     open var unitprice: Double = 0.0,
@@ -19,7 +19,7 @@ open class Material(
     open var coverage: Double = 0.0,
     var qty: Int? = 0,
     var image: String = "",
-    var categoryid: Int = 0,
+    var categoryID: Int = 0,
     var selected: Boolean = false
 ){
 
@@ -40,7 +40,7 @@ open class Material(
     override fun equals(other: Any?): Boolean {
         val obj = other as Material
 
-        if (this.id != obj.id){
+        if (this.ID != obj.ID){
             return false
         }
 
@@ -51,7 +51,7 @@ open class Material(
         return true
     }
 
-    operator fun component1() = id
+    operator fun component1() = ID
     operator fun component2() = subtype
     operator fun component3() = name
     operator fun component4() = unitprice
@@ -59,11 +59,11 @@ open class Material(
     operator fun component6() = width
     operator fun component7() = coverage
     operator fun component8() = image
-    operator fun component9() = categoryid
+    operator fun component9() = categoryID
     operator fun component10() = selected
 
     override fun hashCode(): Int {
-        var result = id
+        var result = ID
         result = 31 * result + name.hashCode()
         return result
     }

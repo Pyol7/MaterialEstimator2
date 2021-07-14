@@ -21,29 +21,18 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 /**
  * Displays the list of projects
  */
-class ProjectsFragment : Fragment(), ProjectsFragmentAdapter.OnItemClickListener {
+class ProjectsFragment : Fragment(R.layout.fragment_projects), ProjectsFragmentAdapter.OnItemClickListener {
     private val vm: ProjectsViewModel by viewModels()
     private var rvAdapter: ProjectsFragmentAdapter? = null
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_projects, container, false)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Use this fragment's toolbar and provide all functionality
         val toolbar = view.findViewById(R.id.projects_toolbar) as Toolbar
         toolbar.inflateMenu(R.menu.general_toolbar_menu)
         toolbar.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
-
-        // Enable toolbar functionality for this fragment
         setHasOptionsMenu(true)
 
         val rv = view.findViewById(R.id.projects_rv) as RecyclerView

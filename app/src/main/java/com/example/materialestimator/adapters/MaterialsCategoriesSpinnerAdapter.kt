@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.example.materialestimator.R
-import com.example.materialestimator.models.entities.Category
+import com.example.materialestimator.models.entities.MaterialCategory
 
 class MaterialsCategoriesSpinnerAdapter(context: Context) :
-    ArrayAdapter<Category>(context, 0) {
+    ArrayAdapter<MaterialCategory>(context, 0) {
 
-    fun setList(list: List<Category>) {
+    fun setList(list: List<MaterialCategory>) {
         clear()
         addAll(list)
         notifyDataSetChanged()

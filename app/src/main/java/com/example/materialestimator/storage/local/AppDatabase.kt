@@ -17,15 +17,12 @@ import com.example.materialestimator.utilities.DataSource1
 
 @Database(
     entities = [
-        Category::class,
-        Material::class,
         Project::class,
         Task::class,
+        MaterialCategory::class,
+        Material::class,
         Employee::class,
-        Equipment::class,
-        Photo::class,
-        File::class,
-        Note::class
+        Tool::class
     ],
     version = 1,
     exportSchema = false
@@ -37,10 +34,11 @@ import com.example.materialestimator.utilities.DataSource1
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun projectDao(): ProjectDao
-    abstract fun categoryDao(): CategoryDao
+    abstract fun taskDao(): TaskDao
+    abstract fun materialCategoryDao(): MaterialCategoryDao
     abstract fun materialDao(): MaterialDao
     abstract fun employeeDao(): EmployeeDao
-    abstract fun taskDao(): TaskDao
+    abstract fun toolDao(): ToolDao
 
     companion object {
 

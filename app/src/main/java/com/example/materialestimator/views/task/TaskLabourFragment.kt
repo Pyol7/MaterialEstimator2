@@ -19,21 +19,11 @@ import com.example.materialestimator.viewModels.TaskViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class TaskLabourFragment : Fragment(R.layout.fragment_task_labour) {
-    // This vm is scoped to TaskFragment so it is initialized and cleared with it.
     private val taskVm: TaskViewModel by activityViewModels()
     private var rvAdapter: TaskLabourFragmentRVAdapter? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_task_labour, container, false)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         val rv = view.findViewById(R.id.task_labour_rv) as RecyclerView
         rv.apply {
             setHasFixedSize(true)
@@ -41,7 +31,6 @@ class TaskLabourFragment : Fragment(R.layout.fragment_task_labour) {
             adapter = rvAdapter
         }
         taskVm.selectedTask.employees?.let { rvAdapter?.setEmployees(it) }
-
         // Setup a listener on the fab to show the add project fragment
         val fab = view.findViewById(R.id.add_labour_fab) as FloatingActionButton
         fab.setOnClickListener {

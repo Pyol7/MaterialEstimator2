@@ -75,7 +75,7 @@ private class TaskViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fr
             0 -> TaskDescriptionFragment()
             1 -> TaskMaterialFragment()
             2 -> TaskLabourFragment()
-            3 -> TaskLabourFragment()
+            3 -> TaskToolFragment()
             else -> throw Throwable("Invalid position $position")
         }
     }

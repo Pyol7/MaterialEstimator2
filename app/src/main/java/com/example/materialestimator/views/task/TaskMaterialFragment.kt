@@ -36,7 +36,7 @@ class TaskMaterialFragment : Fragment(), TaskMaterialFragmentRVAdapter.OnItemCli
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_task_material, container, false)
-        val rv = view.findViewById<RecyclerView>(R.id.task_material_rv)
+        val rv = view.findViewById<RecyclerView>(R.id.task_materials_rv)
         rv.apply {
             setHasFixedSize(true)
             rvAdapter = TaskMaterialFragmentRVAdapter()
