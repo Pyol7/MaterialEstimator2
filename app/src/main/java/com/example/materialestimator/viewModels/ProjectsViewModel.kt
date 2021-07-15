@@ -10,7 +10,6 @@ import kotlinx.coroutines.launch
 
 class ProjectsViewModel(application: Application) : AndroidViewModel(application) {
     private val projectDao = AppDatabase.getInstance(application).projectDao()
-    private val taskDao = AppDatabase.getInstance(application).taskDao()
 
     fun get(ID: Int?): LiveData<Project> {
         return projectDao.get(ID)
@@ -42,16 +41,6 @@ class ProjectsViewModel(application: Application) : AndroidViewModel(application
     fun clear() {
         viewModelScope.launch(Dispatchers.IO) {
             projectDao.clear()
-        }
-    }
-
-//    fun getAllTasksByProjectId(ID: Int): LiveData<List<Task>> {
-//        return taskDao.getAllTaskByProjectId(ID)
-//    }
-
-    fun insertTask(task: Task) {
-        viewModelScope.launch(Dispatchers.IO) {
-            taskDao.insert(task)
         }
     }
 }

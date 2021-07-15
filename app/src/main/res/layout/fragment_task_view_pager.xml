@@ -6,11 +6,12 @@
     android:layout_height="match_parent">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/task_toolbar"
+        android:id="@+id/task_viewpager_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
+        android:fitsSystemWindows="true"
         app:contentInsetStartWithNavigation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,7 +22,7 @@
         app:title="Task" />
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tab_layout"
+        android:id="@+id/tab_viewpager_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
@@ -29,7 +30,7 @@
         android:paddingStart="25dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/task_toolbar"
+        app:layout_constraintTop_toBottomOf="@id/task_viewpager_toolbar"
         app:tabIndicatorColor="@color/white"
         app:tabMode="scrollable"
         app:tabPaddingStart="12dp"
@@ -37,13 +38,13 @@
         app:tabTextColor="@color/white" />
 
     <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/task_view_pager"
+        android:id="@+id/task_viewpager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tab_layout" />
+        app:layout_constraintTop_toBottomOf="@+id/tab_viewpager_layout" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

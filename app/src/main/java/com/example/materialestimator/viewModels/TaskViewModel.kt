@@ -12,19 +12,6 @@ import kotlinx.coroutines.launch
 
 class TaskViewModel(application: Application) : AndroidViewModel(application) {
     private val taskDao = AppDatabase.getInstance(application).taskDao()
-    lateinit var selectedTask: Task
-
-    fun updateMaterialOnSelectedTaskMaterials(material: Material){
-        val t = selectedTask.materials
-        t?.set(t.indexOf(material), material)
-        update(selectedTask)
-    }
-
-    fun addMaterialsToSelectedTaskMaterials(materials: List<Material>){
-        for (m in materials){
-            selectedTask.materials?.add(m)
-        }
-    }
 
     fun getAllTaskByProjectID(projectID: Int): LiveData<List<Task>> {
         return taskDao.getAllTaskByProjectID(projectID)

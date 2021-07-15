@@ -16,27 +16,28 @@ import com.example.materialestimator.R
 import com.example.materialestimator.TAG
 import com.example.materialestimator.adapters.ProjectsFragmentAdapter
 import com.example.materialestimator.adapters.TaskLabourFragmentRVAdapter
+import com.example.materialestimator.adapters.TaskToolFragmentRVAdapter
 import com.example.materialestimator.viewModels.SharedViewModel
 import com.example.materialestimator.viewModels.TaskViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class TaskLabourFragment : Fragment(R.layout.fragment_task_labour) {
+class TaskToolFragment : Fragment(R.layout.fragment_task_tool) {
     private val sharedViewModel: SharedViewModel by activityViewModels()
     private val taskVm: TaskViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val rvAdapter = TaskLabourFragmentRVAdapter()
-        val rv = view.findViewById(R.id.task_labour_rv) as RecyclerView
+        val rvAdapter = TaskToolFragmentRVAdapter()
+        val rv = view.findViewById(R.id.task_tools_rv) as RecyclerView
         rv.apply {
             setHasFixedSize(true)
             adapter = rvAdapter
         }
-        sharedViewModel.selectedTask.employees?.let { rvAdapter.setEmployees(it) }
+        sharedViewModel.selectedTask.tools?.let { rvAdapter.setTools(it) }
         // Setup a listener on the fab to show the add project fragment
-        val fab = view.findViewById(R.id.add_labour_fab) as FloatingActionButton
+        val fab = view.findViewById(R.id.add_tool_fab) as FloatingActionButton
         fab.setOnClickListener {
-            Toast.makeText(context, "Create new employee...", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Create new tool...", Toast.LENGTH_SHORT).show()
         }
     }
 

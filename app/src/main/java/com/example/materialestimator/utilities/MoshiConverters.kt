@@ -3,6 +3,7 @@ package com.example.materialestimator.utilities
 import androidx.room.TypeConverter
 import com.example.materialestimator.models.entities.Employee
 import com.example.materialestimator.models.entities.Material
+import com.example.materialestimator.models.entities.Project
 import com.example.materialestimator.models.entities.Tool
 import com.example.materialestimator.models.materials.*
 import com.squareup.moshi.FromJson
@@ -128,6 +129,23 @@ class MoshiConverters {
             val type = Types.newParameterizedType(List::class.java, Tool::class.java)
             val adapter = moshi.adapter<List<Tool>>(type)
             return adapter.fromJson(json!!)
+        }
+
+        @TypeConverter
+        @ToJson
+        @JvmStatic
+        fun projectToJson(project: Project): String {
+            val moshi = Moshi.Builder().build()
+            val adapter = moshi.adapter(Project::class.java)
+            return adapter.toJson(project)
+        }
+
+        @TypeConverter
+        @FromJson
+        @JvmStatic
+        fun jsonToProject(json: String): Project? {
+            val adapter = moshiSubtypes.adapter(Project::class.java)
+            return adapter.fromJson(json)
         }
 
 

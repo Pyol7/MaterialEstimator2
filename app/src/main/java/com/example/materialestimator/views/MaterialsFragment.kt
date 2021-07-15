@@ -16,12 +16,13 @@ import com.example.materialestimator.adapters.MaterialsFragmentListAdapter
 import com.example.materialestimator.models.entities.Material
 import com.example.materialestimator.utilities.MoshiConverters
 import com.example.materialestimator.viewModels.MaterialsViewModel
+import com.example.materialestimator.viewModels.SharedViewModel
 import com.example.materialestimator.viewModels.TaskViewModel
 
 class MaterialsFragment : Fragment(R.layout.fragment_materials),
     MaterialsFragmentListAdapter.OnItemClickListener {
+    private val sharedViewModel: SharedViewModel by activityViewModels()
     private val materialsVm: MaterialsViewModel by viewModels()
-    private val taskVm: TaskViewModel by activityViewModels()
     private lateinit var rvAdapter: MaterialsFragmentListAdapter
     private lateinit var counterTv: TextView
     private lateinit var saveBtn: Button
@@ -72,7 +73,7 @@ class MaterialsFragment : Fragment(R.layout.fragment_materials),
         }
 
         saveBtn.setOnClickListener {
-            taskVm.addMaterialsToSelectedTaskMaterials(selectedMaterials)
+            sharedViewModel.addMaterialsToSelectedTaskMaterials(selectedMaterials)
             findNavController().navigateUp()
         }
     }

@@ -28,7 +28,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tab_layout"
+            android:id="@+id/tab_viewpager_layout"
             style="@style/Widget.MaterialComponents.TabLayout.Colored"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

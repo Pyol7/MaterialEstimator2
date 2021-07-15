@@ -7,15 +7,17 @@ import android.view.View
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.example.materialestimator.R
 import com.example.materialestimator.TAG
 import com.example.materialestimator.utilities.Converters
+import com.example.materialestimator.viewModels.SharedViewModel
 import com.example.materialestimator.viewModels.TaskViewModel
 import java.util.*
 
 class TaskDescriptionFragment : Fragment(R.layout.fragment_task_description) {
-    // Initialize the vm using the parent fragment's scope (ie TaskFragment())
-    private val taskVm: TaskViewModel by activityViewModels()
+    private val sharedViewModel: SharedViewModel by activityViewModels()
+    private val taskVm: TaskViewModel by viewModels()
     private lateinit var titleEt: EditText
     private lateinit var descriptionEt: EditText
     private lateinit var startDateEt: EditText
@@ -25,9 +27,7 @@ class TaskDescriptionFragment : Fragment(R.layout.fragment_task_description) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initFields(view)
-
         /**
          * Passing the OnDateSetListener as an anonymous object into showDatePickerDialog() allows
          * for multiple views to use the same date picker dialog.
@@ -39,14 +39,12 @@ class TaskDescriptionFragment : Fragment(R.layout.fragment_task_description) {
                 startDateEt.setText(Converters.yearMonthDayToString(year, month, day))
             }
         }
-
         completionDateEt.setOnClickListener {
             showDatePickerDialog { _, year, month, day ->
                 completionDateEt.setText(Converters.yearMonthDayToString(year, month, day))
             }
         }
-
-        val t = taskVm.selectedTask
+        val t = sharedViewModel.selectedTask
             titleEt.setText(t.title)
             descriptionEt.setText(t.description)
             startDateEt.setText(t.startDate?.let { Converters.dateToString(it) })
@@ -54,7 +52,6 @@ class TaskDescriptionFragment : Fragment(R.layout.fragment_task_description) {
             estimatedHoursEt.setText(t.estimatedHours.toString())
             completionDateEt.setText(t.completionDate?.let { Converters.dateToString(it) })
         }
-
 
     override fun onPause() {
         super.onPause()
@@ -71,7 +68,7 @@ class TaskDescriptionFragment : Fragment(R.layout.fragment_task_description) {
     }
 
     private fun saveAllFields(){
-        val t = taskVm.selectedTask
+        val t = sharedViewModel.selectedTask
         t.title = titleEt.text.toString()
         t.description = descriptionEt.text.toString()
         t.startDate = Converters.stringToDate(startDateEt.text.toString())

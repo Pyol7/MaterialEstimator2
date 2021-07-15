@@ -9,13 +9,15 @@ import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
 import com.example.materialestimator.R
 import com.example.materialestimator.models.entities.Project
+import com.example.materialestimator.utilities.Converters
+import com.example.materialestimator.utilities.MoshiConverters
 
 class ProjectsFragmentAdapter : RecyclerView.Adapter<ProjectsFragmentAdapter.ProjectViewHolder?>() {
     private var projects = arrayListOf<Project>()
     private var listener: OnItemClickListener? = null
 
     interface OnItemClickListener {
-        fun onItemClick(projectID: Int)
+        fun onItemClick(jsonProject: String)
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener?) {
@@ -60,7 +62,7 @@ class ProjectsFragmentAdapter : RecyclerView.Adapter<ProjectsFragmentAdapter.Pro
         init {
             itemView.setOnClickListener {
                 listener?.onItemClick(
-                    projects[absoluteAdapterPosition].ID
+                    MoshiConverters.projectToJson(projects[absoluteAdapterPosition])
                 )
             }
         }
