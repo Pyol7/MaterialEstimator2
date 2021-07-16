@@ -30,12 +30,14 @@ class TasksFragmentRVAdapter : RecyclerView.Adapter<TasksFragmentRVAdapter.ViewH
     @NonNull
     override fun onCreateViewHolder(@NonNull viewGroup: ViewGroup, i: Int): ViewHolder {
         val itemView: View = LayoutInflater.from(viewGroup.context)
-            .inflate(R.layout.task_list_item, viewGroup, false)
+            .inflate(R.layout.fragment_tasks_list_item, viewGroup, false)
         return ViewHolder(itemView)
     }
 
     override fun onBindViewHolder(@NonNull holder: ViewHolder, position: Int) {
         val task = tasks[position]
+        holder.numTv.text = task.ID.toString()
+        holder.titleTv.text = task.title
         holder.titleTv.text = task.title
         val formattedText: String = String.format(
             holder.itemView.resources.getString(R.string.append_percent),
@@ -47,6 +49,7 @@ class TasksFragmentRVAdapter : RecyclerView.Adapter<TasksFragmentRVAdapter.ViewH
     override fun getItemCount() = tasks.size
 
     inner class ViewHolder(@NonNull itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val numTv: TextView = itemView.findViewById(R.id.task_num_tv)
         val titleTv: TextView = itemView.findViewById(R.id.task_title_tv)
         val percentCompletedTv: TextView = itemView.findViewById(R.id.task_percent_completed_tv)
 

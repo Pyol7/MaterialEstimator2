@@ -11,6 +11,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.materialestimator.R
 import com.example.materialestimator.TAG
+import com.example.materialestimator.models.entities.Task
 import com.example.materialestimator.viewModels.SharedViewModel
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -30,6 +31,7 @@ class TaskViewPagerFragment : Fragment(R.layout.fragment_task_view_pager) {
         super.onViewCreated(view, savedInstanceState)
 
         val toolbar = view.findViewById<Toolbar>(R.id.task_viewpager_toolbar)
+        toolbar.title = "Task ${sharedViewModel.selectedTask.ID}"
         toolbar.subtitle = sharedViewModel.selectedProject.name
         toolbar.setNavigationOnClickListener {
             findNavController().navigateUp()
@@ -56,7 +58,8 @@ class TaskViewPagerFragment : Fragment(R.layout.fragment_task_view_pager) {
                     toolbar.setOnMenuItemClickListener {
                         when (it.itemId) {
                             R.id.action_add -> {
-                                Log.i(TAG, "Add Material...")
+                                // Add Material
+                                findNavController().navigate(R.id.action_global_materialsFragment)
                                 true
                             }
                             R.id.action_help -> {
