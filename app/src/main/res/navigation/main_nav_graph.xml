@@ -51,27 +51,26 @@
 
     <fragment
         android:id="@+id/projectFragment"
-        android:name="com.example.materialestimator.views.ProjectFragment"
+        android:name="com.example.materialestimator.views.project.ProjectFragment"
         android:label="ProjectFragment"
         tools:layout="@layout/fragment_project">
         <action
-            android:id="@+id/action_projectFragment_to_tasksFragment"
-            app:destination="@id/tasksFragment" />
+            android:id="@+id/action_projectFragment_to_taskFragment"
+            app:destination="@id/taskFragment" />
     </fragment>
     <fragment
-        android:id="@+id/tasksFragment"
-        android:name="com.example.materialestimator.views.TasksFragment"
-        android:label="TasksFragment"
-        tools:layout="@layout/fragment_tasks">
+        android:id="@+id/taskFragment"
+        android:name="com.example.materialestimator.views.task.TaskFragment"
+        android:label="TaskFragment"
+        tools:layout="@layout/fragment_task">
         <action
-            android:id="@+id/action_tasksFragment_to_taskViewPagerFragment"
-            app:destination="@id/taskViewPagerFragment" />
+            android:id="@+id/action_taskFragment_to_toolFragment"
+            app:destination="@id/toolFragment" />
     </fragment>
-
     <fragment
-        android:id="@+id/taskViewPagerFragment"
-        android:name="com.example.materialestimator.views.task.TaskViewPagerFragment"
-        android:label="TaskViewPagerFragment"
-        tools:layout="@layout/fragment_task_view_pager" />
+        android:id="@+id/toolFragment"
+        android:name="com.example.materialestimator.views.ToolFragment"
+        android:label="ToolFragment"
+        tools:layout="@layout/fragment_tool"/>
 
 </navigation>

@@ -12,18 +12,17 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.materialestimator.R
 import com.example.materialestimator.adapters.MaterialsCategoriesSpinnerAdapter
-import com.example.materialestimator.adapters.MaterialsFragmentListAdapter
+import com.example.materialestimator.adapters.MaterialsFragmentRVAdapter
 import com.example.materialestimator.models.entities.Material
 import com.example.materialestimator.utilities.MoshiConverters
 import com.example.materialestimator.viewModels.MaterialsViewModel
 import com.example.materialestimator.viewModels.SharedViewModel
-import com.example.materialestimator.viewModels.TaskViewModel
 
 class MaterialsFragment : Fragment(R.layout.fragment_materials),
-    MaterialsFragmentListAdapter.OnItemClickListener {
+    MaterialsFragmentRVAdapter.OnItemClickListener {
     private val sharedViewModel: SharedViewModel by activityViewModels()
     private val materialsVm: MaterialsViewModel by viewModels()
-    private lateinit var rvAdapter: MaterialsFragmentListAdapter
+    private lateinit var rvAdapter: MaterialsFragmentRVAdapter
     private lateinit var counterTv: TextView
     private lateinit var saveBtn: Button
     private var selectedMaterials = mutableListOf<Material>()
@@ -37,7 +36,7 @@ class MaterialsFragment : Fragment(R.layout.fragment_materials),
         val rv = view.findViewById(R.id.materials_rv) as RecyclerView
         rv.apply {
             setHasFixedSize(true)
-            rvAdapter = MaterialsFragmentListAdapter()
+            rvAdapter = MaterialsFragmentRVAdapter()
             rvAdapter.setOnItemClickListener(this@MaterialsFragment)
             adapter = rvAdapter
             adapter?.stateRestorationPolicy =
@@ -95,7 +94,7 @@ class MaterialsFragment : Fragment(R.layout.fragment_materials),
     }
 
     /**
-     * Receives the selected material ID from MaterialsFragmentListAdapter() and navigates to
+     * Receives the selected material ID from MaterialsFragmentRVAdapter() and navigates to
      * that material.
      */
     override fun onItemClicked(ID: Int) {

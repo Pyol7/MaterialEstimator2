@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/action_tasks"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_format_list_bulleted_24"
+        android:title="Tasks" />
+    <item
+        android:id="@+id/action_photos"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_gallery_24"
+        android:title="Photos" />
+    <item
+        android:id="@+id/action_files"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_folder_32"
+        android:title="Files" />
+    <item
+        android:id="@+id/action_notes"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_notes_24"
+        android:title="Notes" />
+
+</menu>

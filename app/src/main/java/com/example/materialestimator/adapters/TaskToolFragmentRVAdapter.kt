@@ -9,9 +9,19 @@ import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
 import com.example.materialestimator.R
 import com.example.materialestimator.models.entities.Tool
+import com.example.materialestimator.utilities.MoshiConverters
 
 class TaskToolFragmentRVAdapter : RecyclerView.Adapter<TaskToolFragmentRVAdapter.ViewHolder?>() {
     private var tools = arrayListOf<Tool>()
+    private var listener: OnItemClickListener? = null
+
+    interface OnItemClickListener {
+        fun onItemClick(jsonTool: String)
+    }
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        this.listener = listener
+    }
 
     fun setTools(tools: MutableList<Tool>) {
         this.tools = tools as ArrayList<Tool>
@@ -21,7 +31,7 @@ class TaskToolFragmentRVAdapter : RecyclerView.Adapter<TaskToolFragmentRVAdapter
     @NonNull
     override fun onCreateViewHolder(@NonNull viewGroup: ViewGroup, i: Int): TaskToolFragmentRVAdapter.ViewHolder {
         val itemView: View = LayoutInflater.from(viewGroup.context)
-            .inflate(R.layout.fragment_task_tool_list_item, viewGroup, false)
+            .inflate(R.layout.fragment_task_tools_list_item, viewGroup, false)
         return ViewHolder(itemView)
     }
 
@@ -45,6 +55,14 @@ class TaskToolFragmentRVAdapter : RecyclerView.Adapter<TaskToolFragmentRVAdapter
         val imageTv: ImageView = itemView.findViewById(R.id.tool_image_iv)
         val typeTv: TextView = itemView.findViewById(R.id.tool_type_tv)
         val makeTv: TextView = itemView.findViewById(R.id.tool_make_tv)
+
+        init {
+            itemView.setOnClickListener {
+                listener?.onItemClick(
+                    MoshiConverters.toolToJson(tools[absoluteAdapterPosition])
+                )
+            }
+        }
     }
 
 }

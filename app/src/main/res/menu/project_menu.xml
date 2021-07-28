@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@drawable/ic_baseline_settings_24"
+        android:title="Settings"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_help"
+        android:icon="@drawable/ic_baseline_help_24"
+        android:title="Help"
+        app:showAsAction="never"/>
+
+    <!-- These menu item uses an id type navigation which is controlled by
+     "item.onNavDestinationSelected(navController)" in the onOptionsItemSelected method in
+     MainActivity. When this item is clicked, navigation is made to The fragment shown in the
+     id attribute (Ensure that this id matches the id field in the nav_graph).
+     This method of navigation does not allow for passing of arguments. Therefore it is ideal
+     for screens like settings etc. The menuCategory="secondary" attribute causes the up button
+     to function like a regular up button instead of navigating to the home screen.
+
+     The other type of navigation is the global action type navigation which allows the passing
+     of arguments. This looks similar on the xml side but requires additional code in MainActivity. -->
+
+</menu>

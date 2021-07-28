@@ -27,7 +27,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
  * That list would only be cleared if the hosting Activity dies or it is explicitly cleared as in
  * this case when the Task is saved.
  */
-class TaskMaterialFragment : Fragment(R.layout.fragment_task_material) {
+class TaskMaterialsFragment : Fragment(R.layout.fragment_task_material) {
     private val sharedViewModel: SharedViewModel by activityViewModels()
     private val taskVm: TaskViewModel by viewModels()
     private lateinit var task: Task

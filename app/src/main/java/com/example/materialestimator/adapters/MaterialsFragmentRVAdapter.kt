@@ -18,8 +18,8 @@ import com.example.materialestimator.utilities.MoshiConverters
  * Displaying the list of material.
  * Notifying the listener (MaterialsFragment) when a material is selected or clicked.
  */
-class MaterialsFragmentListAdapter:
-    RecyclerView.Adapter<MaterialsFragmentListAdapter.MaterialViewHolder>() {
+class MaterialsFragmentRVAdapter:
+    RecyclerView.Adapter<MaterialsFragmentRVAdapter.MaterialViewHolder>() {
     private var materials = arrayListOf<Material>()
     private var listener: OnItemClickListener? = null
 

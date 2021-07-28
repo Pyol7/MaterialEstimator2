@@ -116,6 +116,23 @@ class MoshiConverters {
         @TypeConverter
         @ToJson
         @JvmStatic
+        fun toolToJson(tool: Tool): String {
+            val moshi = Moshi.Builder().build()
+            val adapter = moshi.adapter(Tool::class.java)
+            return adapter.toJson(tool)
+        }
+
+        @TypeConverter
+        @FromJson
+        @JvmStatic
+        fun jsonToTool(json: String): Tool? {
+            val adapter = moshiSubtypes.adapter(Tool::class.java)
+            return adapter.fromJson(json)
+        }
+
+        @TypeConverter
+        @ToJson
+        @JvmStatic
         fun toolsToJson(tools: List<Tool>?): String {
             val type = Types.newParameterizedType(List::class.java, Tool::class.java)
             val adapter = moshi.adapter<List<Tool>>(type)

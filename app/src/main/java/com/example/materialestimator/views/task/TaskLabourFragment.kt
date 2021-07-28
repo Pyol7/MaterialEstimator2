@@ -33,11 +33,6 @@ class TaskLabourFragment : Fragment(R.layout.fragment_task_labour) {
             adapter = rvAdapter
         }
         sharedViewModel.selectedTask.employees?.let { rvAdapter.setEmployees(it) }
-        // Setup a listener on the fab to show the add project fragment
-        val fab = view.findViewById(R.id.add_labour_fab) as FloatingActionButton
-        fab.setOnClickListener {
-            Toast.makeText(context, "Create new employee...", Toast.LENGTH_SHORT).show()
-        }
     }
 
     override fun onPause() {

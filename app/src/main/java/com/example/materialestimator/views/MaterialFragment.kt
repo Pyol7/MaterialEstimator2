@@ -44,7 +44,7 @@ class MaterialFragment : Fragment() {
 
         // Use this fragment's toolbar and provide all functionality
         val toolbar = view.findViewById(R.id.material_toolbar) as Toolbar
-        toolbar.inflateMenu(R.menu.general_toolbar_menu)
+        toolbar.inflateMenu(R.menu.general_menu)
         toolbar.setNavigationOnClickListener {
             findNavController().navigateUp()
         }

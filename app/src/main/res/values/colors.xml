@@ -14,4 +14,6 @@
     <color name="pie_green">#5ABF56</color>
     <color name="pie_purple">#FF6200EE</color>
 
+    <color name="translucent_black_50p">#BF000000</color>
+
 </resources>
