@@ -3,7 +3,6 @@ package com.example.materialestimator.utilities
 import android.util.Log
 import androidx.room.TypeConverter
 import com.example.materialestimator.TAG
-import com.example.materialestimator.models.entities.Project
 import java.text.DateFormat
 import java.util.*
 

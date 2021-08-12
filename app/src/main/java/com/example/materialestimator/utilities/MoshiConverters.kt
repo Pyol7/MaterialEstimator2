@@ -1,11 +1,9 @@
 package com.example.materialestimator.utilities
 
 import androidx.room.TypeConverter
-import com.example.materialestimator.models.entities.Employee
-import com.example.materialestimator.models.entities.Material
-import com.example.materialestimator.models.entities.Project
-import com.example.materialestimator.models.entities.Tool
-import com.example.materialestimator.models.materials.*
+import com.example.materialestimator.storage.local.entities.*
+import com.example.materialestimator.materials.*
+import com.example.materialestimator.storage.local.relationships.ProjectWithTasks
 import com.squareup.moshi.FromJson
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.ToJson
@@ -27,28 +25,10 @@ class MoshiConverters {
 
     companion object {
 
-        private var moshiSubtypes: Moshi = Moshi.Builder()
-            .add(
-                PolymorphicJsonAdapterFactory.of(Material::class.java, "subtype")
-                    .withSubtype(CChannel::class.java, "CChannel")
-                    .withSubtype(Furring::class.java, "Furring")
-                    .withSubtype(JointCompound::class.java, "JointCompound")
-                    .withSubtype(Panel::class.java, "Panel")
-                    .withSubtype(Screw::class.java, "Screw")
-                    .withSubtype(Tee::class.java, "Tee")
-                    .withSubtype(WallAngle::class.java, "WallAngle")
-                    .withSubtype(Lumber::class.java, "Lumber")
-                    .withSubtype(Steel::class.java, "Steel")
-            )
-            .addLast(KotlinJsonAdapterFactory())
-            .build()
-
-        private val moshi = Moshi.Builder().add(Date::class.java, Rfc3339DateJsonAdapter()).build()
-
         @TypeConverter
         @ToJson
         @JvmStatic
-        fun materialsToJson(materials: List<Material>): String {
+        fun materialsToJson(materials: List<Material>?): String {
             val type = Types.newParameterizedType(List::class.java, Material::class.java)
             val adapter = moshiSubtypes.adapter<List<Material>>(type)
             return adapter.toJson(materials)
@@ -61,21 +41,6 @@ class MoshiConverters {
             val type = Types.newParameterizedType(List::class.java, Material::class.java)
             val adapter = moshiSubtypes.adapter<List<Material>>(type)
             return adapter.fromJson(json!!)
-        }
-
-        fun convertBaseTypeToSubtype(baseType: Material): Material? {
-            return jsonToMaterial(materialToJson(baseType))
-        }
-
-        fun convertListOfBaseTypeToListOfSubtypes(baseTypeList: List<Material>): List<Material> {
-            val subTypesList = arrayListOf<Material>()
-            for (baseType in baseTypeList) {
-                val subType = convertBaseTypeToSubtype(baseType)
-                if (subType != null) {
-                    subTypesList.add(subType)
-                }
-            }
-            return subTypesList
         }
 
         @TypeConverter
@@ -92,6 +57,23 @@ class MoshiConverters {
         @JvmStatic
         fun jsonToMaterial(json: String): Material? {
             val adapter = moshiSubtypes.adapter(Material::class.java)
+            return adapter.fromJson(json)
+        }
+
+        @TypeConverter
+        @ToJson
+        @JvmStatic
+        fun employeeToJson(employee: Employee): String {
+            val moshi = Moshi.Builder().build()
+            val adapter = moshi.adapter(Employee::class.java)
+            return adapter.toJson(employee)
+        }
+
+        @TypeConverter
+        @FromJson
+        @JvmStatic
+        fun jsonToEmployee(json: String): Employee? {
+            val adapter = moshiSubtypes.adapter(Employee::class.java)
             return adapter.fromJson(json)
         }
 
@@ -151,24 +133,53 @@ class MoshiConverters {
         @TypeConverter
         @ToJson
         @JvmStatic
-        fun projectToJson(project: Project): String {
-            val moshi = Moshi.Builder().build()
-            val adapter = moshi.adapter(Project::class.java)
-            return adapter.toJson(project)
+        fun tasksToJson(tasks: List<Task>?): String {
+            val type = Types.newParameterizedType(List::class.java, Task::class.java)
+            val adapter = moshi.adapter<List<Task>>(type)
+            return adapter.toJson(tasks)
         }
 
         @TypeConverter
         @FromJson
         @JvmStatic
-        fun jsonToProject(json: String): Project? {
-            val adapter = moshiSubtypes.adapter(Project::class.java)
+        fun jsonToTasks(json: String): List<Task>? {
+            val type = Types.newParameterizedType(List::class.java, Task::class.java)
+            val adapter = moshi.adapter<List<Task>>(type)
             return adapter.fromJson(json)
         }
 
+        fun convertBaseTypeToSubtype(baseType: Material): Material? {
+            return jsonToMaterial(materialToJson(baseType))
+        }
 
+        fun convertListOfBaseTypeToListOfSubtypes(baseTypeList: List<Material>): List<Material> {
+            val subTypesList = arrayListOf<Material>()
+            for (baseType in baseTypeList) {
+                val subType = convertBaseTypeToSubtype(baseType)
+                if (subType != null) {
+                    subTypesList.add(subType)
+                }
+            }
+            return subTypesList
+        }
 
+        private var moshiSubtypes: Moshi = Moshi.Builder()
+            .add(
+                PolymorphicJsonAdapterFactory.of(Material::class.java, "subtype")
+                    .withSubtype(CChannel::class.java, "CChannel")
+                    .withSubtype(Furring::class.java, "Furring")
+                    .withSubtype(JointCompound::class.java, "JointCompound")
+                    .withSubtype(Panel::class.java, "Panel")
+                    .withSubtype(Screw::class.java, "Screw")
+                    .withSubtype(Tee::class.java, "Tee")
+                    .withSubtype(WallAngle::class.java, "WallAngle")
+                    .withSubtype(Lumber::class.java, "Lumber")
+                    .withSubtype(Steel::class.java, "Steel")
+            )
+            .addLast(KotlinJsonAdapterFactory())
+            .build()
 
-
+        private val moshi = Moshi.Builder().add(Date::class.java, Rfc3339DateJsonAdapter()).build()
 
     }
 }

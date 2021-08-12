@@ -2,8 +2,8 @@ package com.example.materialestimator.viewModels
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.example.materialestimator.models.entities.MaterialCategory
-import com.example.materialestimator.models.entities.Material
+import com.example.materialestimator.storage.local.entities.MaterialCategory
+import com.example.materialestimator.storage.local.entities.Material
 import com.example.materialestimator.storage.local.AppDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,7 +21,7 @@ class MaterialsViewModel(application: Application) : AndroidViewModel(applicatio
     private val materialDao = AppDatabase.getInstance(application).materialDao()
     private val categoryDao = AppDatabase.getInstance(application).materialCategoryDao()
 
-    var selectedCategoryID = MutableLiveData<Int>()
+    var selectedCategoryID = MutableLiveData<Long>()
 
     /**
      * Observes the selectedCategoryID and calls getAllByCategoryID(selectedCategoryID).
@@ -50,11 +50,11 @@ class MaterialsViewModel(application: Application) : AndroidViewModel(applicatio
         return categoryDao.getAll()
     }
 
-    private fun getAllByCategoryID(ID: Int): LiveData<List<Material>> {
+    private fun getAllByCategoryID(ID: Long): LiveData<List<Material>> {
         return materialDao.getAllByCategoryID(ID)
     }
 
-    fun get(ID: Int?): LiveData<Material> {
+    fun get(ID: Long?): LiveData<Material> {
         return materialDao.get(ID)
     }
 
@@ -77,24 +77,18 @@ class MaterialsViewModel(application: Application) : AndroidViewModel(applicatio
         }
     }
 
-    fun updateAll(materials: List<Material>) {
-        viewModelScope.launch(Dispatchers.IO) {
-            materialDao.updateAll(materials)
-        }
-    }
+//    fun deSelectAll() {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            val m = materialDao.getAllSelectedNonLiveData().onEach {
+//                it.selected = false
+//            }
+//            materialDao.updateAll(m)
+//        }
+//    }
 
-    fun deSelectAll() {
+    fun delete(material: Material?) {
         viewModelScope.launch(Dispatchers.IO) {
-            val m = materialDao.getAllSelectedNonLiveData().onEach {
-                it.selected = false
-            }
-            materialDao.updateAll(m)
-        }
-    }
-
-    fun clearAll() {
-        viewModelScope.launch(Dispatchers.IO) {
-            materialDao.clearAll()
+            materialDao.delete(material)
         }
     }
 

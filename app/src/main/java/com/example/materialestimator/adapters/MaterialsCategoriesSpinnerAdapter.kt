@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.example.materialestimator.R
-import com.example.materialestimator.models.entities.MaterialCategory
+import com.example.materialestimator.storage.local.entities.MaterialCategory
 
 class MaterialsCategoriesSpinnerAdapter(context: Context) :
     ArrayAdapter<MaterialCategory>(context, 0) {
@@ -21,8 +21,8 @@ class MaterialsCategoriesSpinnerAdapter(context: Context) :
     private fun createView(position: Int, convertView: View?, parent: ViewGroup): View {
         val category = getItem(position)
         val view = convertView ?: LayoutInflater.from(context)
-            .inflate(R.layout.fragment_materials_categories_list_item, parent, false)
-        val nameView = view?.findViewById(R.id.materials_category_name_tv) as TextView
+            .inflate(R.layout.single_textview_list_item, parent, false)
+        val nameView = view?.findViewById(R.id.single_tv) as TextView
         nameView.text = category?.name
         return view
     }

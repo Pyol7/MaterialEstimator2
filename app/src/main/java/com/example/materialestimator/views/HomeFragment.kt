@@ -21,5 +21,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             findNavController().navigate(R.id.action_homeFragment_to_projectsFragment)
         }
 
+        val employeesCv = view.findViewById(R.id.home_employees_cv) as View
+        employeesCv.setOnClickListener {
+            findNavController().navigate(R.id.action_global_employeesFragment)
+        }
+
     }
 }

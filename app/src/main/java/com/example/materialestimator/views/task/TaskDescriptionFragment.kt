@@ -2,28 +2,45 @@ package com.example.materialestimator.views.task
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.EditText
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.example.materialestimator.R
-import com.example.materialestimator.TAG
+import com.example.materialestimator.storage.local.entities.Task
 import com.example.materialestimator.utilities.Converters
-import com.example.materialestimator.viewModels.SharedViewModel
-import com.example.materialestimator.viewModels.TaskViewModel
+import com.example.materialestimator.viewModels.TasksViewModel
 import java.util.*
 
+/**
+ * Responsibilities:
+ * Displays data that describes the Task.
+ * Updates the task when onPaused() is called.
+ */
+
 class TaskDescriptionFragment : Fragment(R.layout.fragment_task_description) {
-    private val sharedViewModel: SharedViewModel by activityViewModels()
-    private val taskVm: TaskViewModel by viewModels()
+    private val tasksVm: TasksViewModel by viewModels()
     private lateinit var titleEt: EditText
     private lateinit var descriptionEt: EditText
     private lateinit var startDateEt: EditText
     private lateinit var estimatedDaysEt: EditText
     private lateinit var estimatedHoursEt: EditText
     private lateinit var completionDateEt: EditText
+    private lateinit var task: Task
+    private var taskId = 0L
+
+    companion object {
+        fun newInstance(taskId: Long?) = TaskDescriptionFragment().apply {
+            arguments = bundleOf("key" to taskId)
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        // Get the selected task id passed in via construction injection
+        taskId = arguments?.getLong("key")!!
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -44,21 +61,23 @@ class TaskDescriptionFragment : Fragment(R.layout.fragment_task_description) {
                 completionDateEt.setText(Converters.yearMonthDayToString(year, month, day))
             }
         }
-        val t = sharedViewModel.selectedTask
-            titleEt.setText(t.title)
-            descriptionEt.setText(t.description)
-            startDateEt.setText(t.startDate?.let { Converters.dateToString(it) })
-            estimatedDaysEt.setText(t.estimatedDays.toString())
-            estimatedHoursEt.setText(t.estimatedHours.toString())
-            completionDateEt.setText(t.completionDate?.let { Converters.dateToString(it) })
+        tasksVm.get(taskId).observe(viewLifecycleOwner) {
+            task = it
+            titleEt.setText(task.title)
+            descriptionEt.setText(task.description)
+            startDateEt.setText(task.startDate?.let { Converters.dateToString(it) })
+            estimatedDaysEt.setText(task.estimatedDays.toString())
+            estimatedHoursEt.setText(task.estimatedHours.toString())
+            completionDateEt.setText(task.completionDate?.let { Converters.dateToString(it) })
         }
+    }
 
     override fun onPause() {
         super.onPause()
         saveAllFields()
     }
 
-    private fun initFields(view: View){
+    private fun initFields(view: View) {
         titleEt = view.findViewById(R.id.task_title_et)
         descriptionEt = view.findViewById(R.id.task_desc_et)
         startDateEt = view.findViewById(R.id.task_start_date_et)
@@ -67,15 +86,14 @@ class TaskDescriptionFragment : Fragment(R.layout.fragment_task_description) {
         completionDateEt = view.findViewById(R.id.task_completion_date_et)
     }
 
-    private fun saveAllFields(){
-        val t = sharedViewModel.selectedTask
-        t.title = titleEt.text.toString()
-        t.description = descriptionEt.text.toString()
-        t.startDate = Converters.stringToDate(startDateEt.text.toString())
-        t.estimatedDays = Converters.stringToInteger(estimatedDaysEt.text.toString())
-        t.estimatedHours = Converters.stringToInteger(estimatedHoursEt.text.toString())
-        t.completionDate = Converters.stringToDate(completionDateEt.text.toString())
-        taskVm.update(t)
+    private fun saveAllFields() {
+        task.title = titleEt.text.toString()
+        task.description = descriptionEt.text.toString()
+        task.startDate = Converters.stringToDate(startDateEt.text.toString())
+        task.estimatedDays = Converters.stringToInteger(estimatedDaysEt.text.toString())
+        task.estimatedHours = Converters.stringToInteger(estimatedHoursEt.text.toString())
+        task.completionDate = Converters.stringToDate(completionDateEt.text.toString())
+        tasksVm.update(task)
     }
 
     /**

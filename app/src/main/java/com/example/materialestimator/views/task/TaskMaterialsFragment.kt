@@ -2,69 +2,67 @@ package com.example.materialestimator.views.task
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.materialestimator.R
 import com.example.materialestimator.TAG
-import com.example.materialestimator.adapters.TaskMaterialFragmentRVAdapter
-import com.example.materialestimator.models.entities.Material
-import com.example.materialestimator.models.entities.Task
-import com.example.materialestimator.viewModels.SharedViewModel
-import com.example.materialestimator.viewModels.TaskViewModel
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.example.materialestimator.adapters.TaskMaterialsFragmentRVAdapter
+import com.example.materialestimator.storage.local.entities.Material
+import com.example.materialestimator.viewModels.TasksViewModel
 
 /**
- * Responsible for displaying the task's list of material.
- * It creates an instance of the MaterialsViewModel and scopes it to the MainActivity scope.
- * This makes it possible to navigate the the MaterialsFragment class (which builds a material list),
- * then returns back to this class and have that same list available for observation.
- * That list would only be cleared if the hosting Activity dies or it is explicitly cleared as in
- * this case when the Task is saved.
+ * Displays the list of material needed for the Task.
+ * Sends all changes to the parent fragment which in turn updates the task.
  */
-class TaskMaterialsFragment : Fragment(R.layout.fragment_task_material) {
-    private val sharedViewModel: SharedViewModel by activityViewModels()
-    private val taskVm: TaskViewModel by viewModels()
-    private lateinit var task: Task
+
+class TaskMaterialsFragment : Fragment(R.layout.fragment_task_materials) {
+    private val taskVM: TasksViewModel by viewModels()
+    private var taskId = 0L
+
+    companion object {
+        fun newInstance(taskId: Long?) = TaskMaterialsFragment().apply {
+            arguments = bundleOf("key" to taskId)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        task = sharedViewModel.selectedTask
+        // If there is a saved id then restore it, else use the one that was passed in.
+        taskId = savedInstanceState?.getLong("key") ?: arguments?.getLong("key")!!
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val rvAdapter = TaskMaterialFragmentRVAdapter()
-        val rv = view.findViewById<RecyclerView>(R.id.task_materials_rv)
+        // Views
+        val rv = view.findViewById(R.id.task_materials_rv) as RecyclerView
+
+        val rvAdapter = TaskMaterialsFragmentRVAdapter()
         rv.apply {
             setHasFixedSize(true)
-            rvAdapter.setOnItemClickListener(object : TaskMaterialFragmentRVAdapter.OnItemClickListener{
-                override fun onItemClick(material: Material) {
-                    Log.i(TAG, "Name = ${material.name}")
+            rvAdapter.setOnItemClickListener(object :
+                TaskMaterialsFragmentRVAdapter.OnItemClickListener {
+                override fun onItemClick(id: Long) {
+                    // Navigate to MaterialFragment
+                    arguments = bundleOf("key" to id)
+                    findNavController().navigate(R.id.action_taskFragment_to_materialFragment, arguments)
                 }
-
-                override fun onItemQuantityChange(material: Material) {
-                    sharedViewModel.updateMaterialOnSelectedTaskMaterials(material)
-                }
-
             })
             adapter = rvAdapter
         }
-        val addMaterialFab = view.findViewById<FloatingActionButton>(R.id.add_material_fab)
-        addMaterialFab.setOnClickListener {
-            findNavController().navigate(R.id.action_global_materialsFragment)
+        // Get the selected task and display its materials
+        taskVM.get(taskId).observe(viewLifecycleOwner){
+            rvAdapter.setMaterials(it.materials)
         }
-        rvAdapter.setMaterials(task.materials)
+
     }
 
-    override fun onPause() {
-        super.onPause()
-        taskVm.update(task)
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putLong("key", taskId)
     }
 
 }

@@ -19,7 +19,7 @@
         app:layout_constraintEnd_toStartOf="@+id/materials_counter_tv"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/fragment_materials_categories_list_item"
+        tools:listitem="@layout/single_textview_list_item"
         android:dropDownVerticalOffset= "40dp"/>
 
     <androidx.recyclerview.widget.RecyclerView

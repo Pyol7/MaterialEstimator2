@@ -2,13 +2,13 @@ package com.example.materialestimator.storage.local.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.materialestimator.models.entities.Employee
+import com.example.materialestimator.storage.local.entities.Employee
 
 @Dao
 interface EmployeeDao {
 
-    @Query("SELECT * FROM employee WHERE id = :ID")
-    fun get(ID: Int?): LiveData<Employee>
+    @Query("SELECT * FROM employee WHERE employeeId = :ID")
+    fun get(ID: Long?): LiveData<Employee>
 
     @Query("SELECT * FROM employee")
     fun getAll() : LiveData<List<Employee>>

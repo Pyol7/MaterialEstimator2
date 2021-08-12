@@ -25,10 +25,6 @@
             app:destination="@id/materialFragment" />
     </fragment>
 
-    <action
-        android:id="@+id/action_global_materialsFragment"
-        app:destination="@id/materialsFragment" />
-
     <fragment
         android:id="@+id/materialFragment"
         android:name="com.example.materialestimator.views.MaterialFragment"
@@ -66,11 +62,35 @@
         <action
             android:id="@+id/action_taskFragment_to_toolFragment"
             app:destination="@id/toolFragment" />
+        <action
+            android:id="@+id/action_taskFragment_to_employeeFragment"
+            app:destination="@id/employeeFragment" />
+        <action
+            android:id="@+id/action_taskFragment_to_materialFragment"
+            app:destination="@id/materialFragment" />
     </fragment>
     <fragment
         android:id="@+id/toolFragment"
         android:name="com.example.materialestimator.views.ToolFragment"
         android:label="ToolFragment"
-        tools:layout="@layout/fragment_tool"/>
+        tools:layout="@layout/fragment_tool" />
+    <fragment
+        android:id="@+id/employeeFragment"
+        android:name="com.example.materialestimator.views.EmployeeFragment"
+        android:label="EmployeeFragment"
+        tools:layout="@layout/fragment_employee" />
+    <fragment
+        android:id="@+id/employeesFragment"
+        android:name="com.example.materialestimator.views.EmployeesFragment"
+        android:label="EmployeesFragment"
+        tools:layout="@layout/fragment_employees" />
+
+    <action
+        android:id="@+id/action_global_employeesFragment"
+        app:destination="@id/employeesFragment" />
+
+    <action
+        android:id="@+id/action_global_materialsFragment"
+        app:destination="@id/materialsFragment" />
 
 </navigation>

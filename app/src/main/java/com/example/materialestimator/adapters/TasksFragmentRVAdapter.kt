@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
 import com.example.materialestimator.R
-import com.example.materialestimator.models.entities.Task
+import com.example.materialestimator.storage.local.entities.Task
 
 
 class TasksFragmentRVAdapter : RecyclerView.Adapter<TasksFragmentRVAdapter.ViewHolder?>() {
@@ -15,7 +15,7 @@ class TasksFragmentRVAdapter : RecyclerView.Adapter<TasksFragmentRVAdapter.ViewH
     private var listener: OnItemClickListener? = null
 
     interface OnItemClickListener {
-        fun onItemClick(task: Task)
+        fun onItemClick(taskId: Long?)
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
@@ -36,7 +36,7 @@ class TasksFragmentRVAdapter : RecyclerView.Adapter<TasksFragmentRVAdapter.ViewH
 
     override fun onBindViewHolder(@NonNull holder: ViewHolder, position: Int) {
         val task = tasks[position]
-        holder.numTv.text = task.ID.toString()
+        holder.numTv.text = task.taskId.toString()
         holder.titleTv.text = task.title
         holder.titleTv.text = task.title
         val formattedText: String = String.format(
@@ -57,7 +57,7 @@ class TasksFragmentRVAdapter : RecyclerView.Adapter<TasksFragmentRVAdapter.ViewH
             itemView.setOnClickListener {
                 // When a task is selected, send the task ID to the listeners
                 listener?.onItemClick(
-                    tasks[absoluteAdapterPosition]
+                    tasks[absoluteAdapterPosition].taskId
                 )
             }
         }

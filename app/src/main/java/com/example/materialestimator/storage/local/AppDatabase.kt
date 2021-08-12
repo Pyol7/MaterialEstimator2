@@ -8,21 +8,21 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.materialestimator.TAG
-import com.example.materialestimator.models.entities.*
+import com.example.materialestimator.storage.local.entities.*
 import com.example.materialestimator.storage.local.dao.*
 import com.example.materialestimator.utilities.Converters
-import com.example.materialestimator.utilities.DataSource2
+import com.example.materialestimator.utilities.SeedDataMaterial
 import com.example.materialestimator.utilities.MoshiConverters
-import com.example.materialestimator.utilities.DataSource1
+import com.example.materialestimator.utilities.SeedDataProject
 
 @Database(
     entities = [
-        Project::class,
-        Task::class,
         MaterialCategory::class,
         Material::class,
         Employee::class,
-        Tool::class
+        Project::class,
+        Task::class,
+        Tool::class,
     ],
     version = 1,
     exportSchema = false
@@ -33,11 +33,11 @@ import com.example.materialestimator.utilities.DataSource1
 )
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract fun projectDao(): ProjectDao
-    abstract fun taskDao(): TaskDao
     abstract fun materialCategoryDao(): MaterialCategoryDao
     abstract fun materialDao(): MaterialDao
     abstract fun employeeDao(): EmployeeDao
+    abstract fun projectDao(): ProjectDao
+    abstract fun taskDao(): TaskDao
     abstract fun toolDao(): ToolDao
 
     companion object {
@@ -69,8 +69,8 @@ abstract class AppDatabase : RoomDatabase() {
         private val roomCallback = object : Callback() {
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
-                DataSource2.insertCategoryAndMaterials(INSTANCE!!)
-                DataSource1.insertProjectsAndTasks(INSTANCE!!)
+                SeedDataMaterial.insert(INSTANCE!!)
+                SeedDataProject.insert(INSTANCE!!)
                 Log.i(TAG, "DB first run...")
             }
         }

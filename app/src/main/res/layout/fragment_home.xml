@@ -12,7 +12,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -23,7 +23,6 @@
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/slogan_tv">
 
@@ -177,6 +176,7 @@
             app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/home_employees_cv"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
@@ -193,7 +193,7 @@
                         android:layout_below="@id/cycle"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="10dp"
-                        android:text="Team"
+                        android:text="Employees"
                         android:textSize="20sp"
                         app:fontFamily="sans-serif" />
 

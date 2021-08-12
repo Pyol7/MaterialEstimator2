@@ -2,16 +2,20 @@ package com.example.materialestimator.viewModels
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.example.materialestimator.models.entities.Project
-import com.example.materialestimator.models.entities.Task
+import com.example.materialestimator.storage.local.entities.Project
 import com.example.materialestimator.storage.local.AppDatabase
+import com.example.materialestimator.storage.local.relationships.ProjectWithTasks
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ProjectsViewModel(application: Application) : AndroidViewModel(application) {
     private val projectDao = AppDatabase.getInstance(application).projectDao()
 
-    fun get(ID: Int?): LiveData<Project> {
+    fun getAllProjectsWithTasks(): LiveData<List<ProjectWithTasks>> {
+        return projectDao.getAllProjectsWithTasks()
+    }
+
+    fun get(ID: Long?): LiveData<ProjectWithTasks> {
         return projectDao.get(ID)
     }
 
@@ -19,28 +23,21 @@ class ProjectsViewModel(application: Application) : AndroidViewModel(application
         return projectDao.getAll()
     }
 
-
-    fun insert(project: Project?) {
+    fun insert(projectWithTasks: Project?) {
         viewModelScope.launch(Dispatchers.IO) {
-            projectDao.insert(project)
+            projectDao.insert(projectWithTasks)
         }
     }
 
-    fun update(project: Project?) {
+    fun update(projectWithTasks: Project?) {
         viewModelScope.launch(Dispatchers.IO) {
-            projectDao.update(project)
+            projectDao.update(projectWithTasks)
         }
     }
 
-    fun updateAll(projects: List<Project>) {
+    fun delete(projectWithTasks: Project) {
         viewModelScope.launch(Dispatchers.IO) {
-            projectDao.updateAll(projects)
-        }
-    }
-
-    fun clear() {
-        viewModelScope.launch(Dispatchers.IO) {
-            projectDao.clear()
+            projectDao.delete(projectWithTasks)
         }
     }
 }

@@ -10,7 +10,8 @@ import androidx.annotation.Nullable
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.materialestimator.R
-import com.example.materialestimator.models.entities.Material
+import com.example.materialestimator.adapters.MaterialsFragmentRVAdapter.*
+import com.example.materialestimator.storage.local.entities.Material
 import com.example.materialestimator.utilities.MoshiConverters
 
 /**
@@ -18,14 +19,13 @@ import com.example.materialestimator.utilities.MoshiConverters
  * Displaying the list of material.
  * Notifying the listener (MaterialsFragment) when a material is selected or clicked.
  */
-class MaterialsFragmentRVAdapter:
-    RecyclerView.Adapter<MaterialsFragmentRVAdapter.MaterialViewHolder>() {
+class MaterialsFragmentRVAdapter: RecyclerView.Adapter<MaterialViewHolder>() {
     private var materials = arrayListOf<Material>()
     private var listener: OnItemClickListener? = null
 
     interface OnItemClickListener {
         fun onItemSelected(json: String)
-        fun onItemClicked(ID: Int)
+        fun onItemClicked(id: Long)
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener?) {
@@ -97,7 +97,7 @@ class MaterialsFragmentRVAdapter:
              * Send the Material ID to the listener.
              */
             listItemView.setOnClickListener {
-                listener?.onItemClicked(materials[absoluteAdapterPosition].ID)
+                listener?.onItemClicked(materials[absoluteAdapterPosition].materialId)
             }
         }
 
@@ -117,7 +117,7 @@ class MaterialDiffCallback(
     override fun getNewListSize(): Int = newList.size
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldList[oldItemPosition].ID == newList[newItemPosition].ID
+        return oldList[oldItemPosition].materialId == newList[newItemPosition].materialId
     }
 
     override fun areContentsTheSame(oldPosition: Int, newPosition: Int): Boolean {

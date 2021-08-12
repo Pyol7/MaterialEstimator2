@@ -2,19 +2,19 @@ package com.example.materialestimator.storage.local.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.materialestimator.models.entities.MaterialCategory
-import com.example.materialestimator.models.relationships.CategoriesWithMaterials
+import com.example.materialestimator.storage.local.entities.MaterialCategory
+import com.example.materialestimator.storage.local.relationships.CategoriesWithMaterials
 
 @Dao
 interface MaterialCategoryDao {
-    @Query("SELECT * FROM category WHERE id = :ID")
-    fun get(ID: Int?): LiveData<MaterialCategory>
+    @Query("SELECT * FROM materialcategory WHERE materialCategoryId = :ID")
+    fun get(ID: Long?): LiveData<MaterialCategory>
 
-    @Query("SELECT * FROM category")
+    @Query("SELECT * FROM materialcategory")
     fun getAll() : LiveData<List<MaterialCategory>>
 
     @Transaction
-    @Query("SELECT * FROM category")
+    @Query("SELECT * FROM materialcategory")
     fun getCategoriesWithMaterials(): LiveData<List<CategoriesWithMaterials>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -23,9 +23,6 @@ interface MaterialCategoryDao {
     @Update
     suspend fun update(materialCategory: MaterialCategory?)
 
-    @Update
-    suspend fun updateAll(materialCategories: List<MaterialCategory>)
-
-    @Query("DELETE FROM category")
-    suspend fun clear()
+    @Delete
+    suspend fun delete(materialCategory: MaterialCategory?)
 }

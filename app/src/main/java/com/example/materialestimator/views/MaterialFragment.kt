@@ -3,58 +3,56 @@ package com.example.materialestimator.views
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.materialestimator.R
 import com.example.materialestimator.TAG
-import com.example.materialestimator.models.entities.Material
+import com.example.materialestimator.storage.local.entities.Material
 import com.example.materialestimator.utilities.MoshiConverters
 import com.example.materialestimator.utilities.Functions
 import com.example.materialestimator.viewModels.MaterialsViewModel
 import java.util.*
 
-class MaterialFragment : Fragment() {
-    private val vm: MaterialsViewModel by activityViewModels()
+class MaterialFragment : Fragment(R.layout.fragment_material) {
+    private val materialsVM: MaterialsViewModel by viewModels()
     private var properties: ArrayList<Pair<String, String>>? = arrayListOf()
     private var material: Material? = null
-    private var rvAdapter = PropertiesListAdapter()
+    private var materialId = 0L
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Configure the recycler view
-        val view = inflater.inflate(R.layout.fragment_material, container, false)
-        val rv = view.findViewById(R.id.material_properties_rv) as RecyclerView
-        rv.adapter = rvAdapter
-        return view
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        // If there is a saved id then restore it, else use the one that was passed in.
+        materialId = savedInstanceState?.getLong("key") ?: arguments?.getLong("key")!!
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Use this fragment's toolbar and provide all functionality
+        // Views
         val toolbar = view.findViewById(R.id.material_toolbar) as Toolbar
+        val rv = view.findViewById(R.id.material_properties_rv) as RecyclerView
+        // Toolbar
         toolbar.inflateMenu(R.menu.general_menu)
         toolbar.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
+        // Adapter
+        val rvAdapter = PropertiesListAdapter()
+        // RecyclerView
+        rv.apply {
+            setHasFixedSize(true)
+            adapter = rvAdapter
+        }
 
         // Get and observe the Material clicked
-        val id = arguments?.getInt("Key")
-        vm.get(id).observe(viewLifecycleOwner, { baseMaterial ->
-
+        materialsVM.get(materialId).observe(viewLifecycleOwner) { baseMaterial ->
             material = MoshiConverters.convertBaseTypeToSubtype(baseMaterial)
-
             val imageIv = view.findViewById(R.id.material_image_iv) as ImageView
             val imgId = resources.getIdentifier(
                 material?.image,
@@ -62,11 +60,9 @@ class MaterialFragment : Fragment() {
                 context?.packageName
             )
             imageIv.setImageResource(imgId)
-
             properties = material?.getOptionalProperties()
             rvAdapter.setData(properties)
-
-        })
+        }
     }
 
     inner class PropertiesListAdapter :
@@ -133,7 +129,7 @@ class MaterialFragment : Fragment() {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     v.clearFocus() // Triggers the last onFocusChanged event to save change
                     context?.let { Functions.hideKeyboard(it, v.rootView) }
-                    vm.insert(material)
+                    materialsVM.insert(material)
                 }
                 false
             }
@@ -146,6 +142,11 @@ class MaterialFragment : Fragment() {
         RecyclerView.ViewHolder(view) {
         val labelTV = view.findViewById(R.id.material_property_label_tv) as TextView
         val valueEt = view.findViewById(R.id.material_property_value_et) as EditText
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putLong("key", materialId)
     }
 
 }
