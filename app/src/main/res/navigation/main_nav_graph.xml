@@ -83,7 +83,11 @@
         android:id="@+id/employeesFragment"
         android:name="com.example.materialestimator.views.EmployeesFragment"
         android:label="EmployeesFragment"
-        tools:layout="@layout/fragment_employees" />
+        tools:layout="@layout/fragment_employees" >
+        <action
+            android:id="@+id/action_employeesFragment_to_employeeFragment"
+            app:destination="@id/employeeFragment" />
+    </fragment>
 
     <action
         android:id="@+id/action_global_employeesFragment"
@@ -92,5 +96,15 @@
     <action
         android:id="@+id/action_global_materialsFragment"
         app:destination="@id/materialsFragment" />
+    <fragment
+        android:id="@+id/toolsFragment"
+        android:name="com.example.materialestimator.views.ToolsFragment"
+        android:label="ToolsFragment"
+        tools:layout="@layout/fragment_tools">
+        <action
+            android:id="@+id/action_toolsFragment_to_toolFragment"
+            app:destination="@id/toolFragment" />
+    </fragment>
+    <action android:id="@+id/action_global_toolsFragment" app:destination="@id/toolsFragment" />
 
 </navigation>

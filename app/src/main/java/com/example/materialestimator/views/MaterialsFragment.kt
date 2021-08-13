@@ -2,10 +2,11 @@ package com.example.materialestimator.views
 
 import android.os.Bundle
 import android.view.*
+import android.view.View.INVISIBLE
 import android.widget.*
+import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
@@ -17,25 +18,26 @@ import com.example.materialestimator.adapters.MaterialsFragmentRVAdapter
 import com.example.materialestimator.storage.local.entities.Material
 import com.example.materialestimator.utilities.MoshiConverters
 import com.example.materialestimator.viewModels.MaterialsViewModel
-import com.example.materialestimator.viewModels.SharedViewModel
-import com.example.materialestimator.viewModels.TasksViewModel
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MaterialsFragment : Fragment(R.layout.fragment_materials),
     MaterialsFragmentRVAdapter.OnItemClickListener {
     private val materialsVm: MaterialsViewModel by viewModels()
     private lateinit var rvAdapter: MaterialsFragmentRVAdapter
     private lateinit var counterTv: TextView
-    private lateinit var addBtn: Button
     private var selectedMaterials = mutableListOf<Material>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // View
-        counterTv = view.findViewById(R.id.materials_counter_tv)
-        addBtn = view.findViewById(R.id.materials_add_btn)
-        val rv = view.findViewById(R.id.materials_rv) as RecyclerView
+        // Views
+        val toolbar = view.findViewById(R.id.materials_toolbar) as Toolbar
         val spinner = view.findViewById(R.id.materials_spinner) as Spinner
-
+        counterTv = view.findViewById(R.id.materials_counter_tv)
+        val rv = view.findViewById(R.id.materials_rv) as RecyclerView
+        val fab = view.findViewById(R.id.materials_add_fab) as FloatingActionButton
+        // Toolbar
+        toolbar.setNavigationOnClickListener { findNavController().navigateUp() }
+        toolbar.title = "Materials"
         // Setup the recyclerview
         rv.apply {
             setHasFixedSize(true)
@@ -73,7 +75,7 @@ class MaterialsFragment : Fragment(R.layout.fragment_materials),
             rvAdapter.setList(it)
         }
 
-        addBtn.setOnClickListener {
+        fab.setOnClickListener {
             val json = MoshiConverters.materialsToJson(selectedMaterials)
             /**
              * Sends a bundle to any fragment that implements
@@ -84,14 +86,13 @@ class MaterialsFragment : Fragment(R.layout.fragment_materials),
                 "materialsFragmentRequestKey",
                 bundleOf("key" to json)
             )
-
             findNavController().navigateUp()
         }
     }
 
     /**
      * Receives the selected material from MaterialsFragmentListAdapter(), adds it to
-     * property selectedMaterials and update the counter.
+     * property selectedMaterials and updates the counter.
      */
     override fun onItemSelected(json: String) {
         val material = MoshiConverters.jsonToMaterial(json)

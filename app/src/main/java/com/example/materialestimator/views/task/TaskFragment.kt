@@ -102,21 +102,22 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
                     1 -> {
                         currentPage = 1
                         addFab.setOnClickListener {
-                            // Show MaterialsFragment to allow the user to select materials
-                            // to add to this task.
+                            // Show MaterialsFragment for selecting materials to add
                             findNavController().navigate(R.id.action_global_materialsFragment)
                         }
                     }
                     2 -> {
                         currentPage = 2
                         addFab.setOnClickListener {
-                            Log.i(TAG, "Adding Labour...")
+                            // Show EmployeesFragment for selecting employees to add
+                            findNavController().navigate(R.id.action_global_employeesFragment)
                         }
                     }
                     3 -> {
                         currentPage = 3
                         addFab.setOnClickListener {
-                            Log.i(TAG, "Adding Tool...")
+                            // Show ToolsFragment for selecting tools to add
+                            findNavController().navigate(R.id.action_global_toolsFragment)
                         }
                     }
                 }

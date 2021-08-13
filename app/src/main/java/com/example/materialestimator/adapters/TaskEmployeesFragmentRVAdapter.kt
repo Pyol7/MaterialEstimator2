@@ -9,7 +9,6 @@ import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
 import com.example.materialestimator.R
 import com.example.materialestimator.storage.local.entities.Employee
-import com.example.materialestimator.storage.local.relationships.TaskWithEmployees
 
 class TaskEmployeesFragmentRVAdapter : RecyclerView.Adapter<TaskEmployeesFragmentRVAdapter.ViewHolder?>() {
     private var employees = arrayListOf<Employee>()
@@ -31,7 +30,7 @@ class TaskEmployeesFragmentRVAdapter : RecyclerView.Adapter<TaskEmployeesFragmen
     @NonNull
     override fun onCreateViewHolder(@NonNull viewGroup: ViewGroup, i: Int): TaskEmployeesFragmentRVAdapter.ViewHolder {
         val itemView: View = LayoutInflater.from(viewGroup.context)
-            .inflate(R.layout.fragment_employee_list_item, viewGroup, false)
+            .inflate(R.layout.fragment_employees_list_item, viewGroup, false)
         return ViewHolder(itemView)
     }
 

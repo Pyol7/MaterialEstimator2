@@ -9,7 +9,6 @@ import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
 import com.example.materialestimator.R
 import com.example.materialestimator.storage.local.entities.Tool
-import com.example.materialestimator.utilities.MoshiConverters
 
 class TaskToolsFragmentRVAdapter : RecyclerView.Adapter<TaskToolsFragmentRVAdapter.ViewHolder?>() {
     private var tools = arrayListOf<Tool>()
@@ -31,7 +30,7 @@ class TaskToolsFragmentRVAdapter : RecyclerView.Adapter<TaskToolsFragmentRVAdapt
     @NonNull
     override fun onCreateViewHolder(@NonNull viewGroup: ViewGroup, i: Int): TaskToolsFragmentRVAdapter.ViewHolder {
         val itemView: View = LayoutInflater.from(viewGroup.context)
-            .inflate(R.layout.fragment_task_tools_list_item, viewGroup, false)
+            .inflate(R.layout.fragment_tools_list_item, viewGroup, false)
         return ViewHolder(itemView)
     }
 

@@ -14,7 +14,7 @@ class EmployeesFragmentRVAdapter: RecyclerView.Adapter<EmployeesFragmentRVAdapte
     private var listener: OnItemClickListener? = null
 
     interface OnItemClickListener {
-        fun onItemSelected(employee: Employee)
+        fun onItemSelected(id: Long)
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener?) {
@@ -28,7 +28,7 @@ class EmployeesFragmentRVAdapter: RecyclerView.Adapter<EmployeesFragmentRVAdapte
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EmployeeViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(
-            R.layout.fragment_employee_list_item,
+            R.layout.fragment_employees_list_item,
             parent,
             false
         )
@@ -59,7 +59,7 @@ class EmployeesFragmentRVAdapter: RecyclerView.Adapter<EmployeesFragmentRVAdapte
         init {
             itemView.setOnClickListener {
                 listener?.onItemSelected(
-                    employees[absoluteAdapterPosition]
+                    employees[absoluteAdapterPosition].employeeId
                 )
             }
         }

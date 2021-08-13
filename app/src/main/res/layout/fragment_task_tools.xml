@@ -24,7 +24,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:itemCount="6"
-                tools:listitem="@layout/fragment_task_tools_list_item" />
+                tools:listitem="@layout/fragment_tools_list_item" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
