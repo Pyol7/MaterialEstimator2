@@ -1,13 +1,16 @@
 package com.example.materialestimator.viewModels
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.*
+import com.example.materialestimator.TAG
 import com.example.materialestimator.storage.local.entities.Task
 import com.example.materialestimator.storage.local.AppDatabase
 import com.example.materialestimator.storage.local.relationships.TaskWithEmployees
 import com.example.materialestimator.storage.local.relationships.TaskWithTools
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class TasksViewModel(application: Application) : AndroidViewModel(application) {
     private val taskDao = AppDatabase.getInstance(application).taskDao()
@@ -20,10 +23,16 @@ class TasksViewModel(application: Application) : AndroidViewModel(application) {
         return taskDao.get(id)
     }
 
-    fun insert(task: Task?) {
-        viewModelScope.launch(Dispatchers.IO) {
-            taskDao.insert(task)
+    suspend fun insertTask(task: Task) {
+        taskDao.insert(task)
+    }
+
+    fun insert(task: Task?): LiveData<Long> {
+        val id = MutableLiveData<Long>()
+        viewModelScope.launch {
+            id.value = taskDao.insert(task)
         }
+        return id
     }
 
     fun update(task: Task?) {

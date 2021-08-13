@@ -79,8 +79,8 @@ class MaterialsFragment : Fragment(R.layout.fragment_materials),
             val json = MoshiConverters.materialsToJson(selectedMaterials)
             /**
              * Sends a bundle to any fragment that implements
-             * setFragmentResultListener("materialsFragmentRequestKey")
-             * In this case TaskFragment.
+             * setFragmentResultListener("requestKey")
+             * In this case its TaskFragment.
              */
             setFragmentResult(
                 "materialsFragmentRequestKey",

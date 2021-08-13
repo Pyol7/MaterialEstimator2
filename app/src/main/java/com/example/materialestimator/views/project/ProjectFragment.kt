@@ -4,22 +4,36 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.materialestimator.R
 import com.example.materialestimator.TAG
+import com.example.materialestimator.storage.local.entities.Task
 import com.example.materialestimator.storage.local.relationships.ProjectWithTasks
 import com.example.materialestimator.viewModels.ProjectsViewModel
+import com.example.materialestimator.viewModels.TasksViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
+/**
+ * Sets up the view pager and tabs that displays fragments containing
+ * data associated with the Project.
+ */
 
 class ProjectFragment : Fragment(R.layout.fragment_project) {
     private val projectsVM: ProjectsViewModel by viewModels()
+    private val tasksVM: TasksViewModel by viewModels()
     private lateinit var viewPager: ViewPager2
     private lateinit var tabLayout: TabLayout
     private lateinit var addFab: FloatingActionButton
@@ -28,8 +42,8 @@ class ProjectFragment : Fragment(R.layout.fragment_project) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Get the selected project id passed in via nav component
-        projectId = arguments?.getLong("key")!!
+        // If there is a saved id then restore it, else use the one that was passed in.
+        projectId = savedInstanceState?.getLong("key") ?: arguments?.getLong("key")!!
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -94,7 +108,17 @@ class ProjectFragment : Fragment(R.layout.fragment_project) {
                 when (position) {
                     0 -> {
                         addFab.setOnClickListener {
-                            Log.i(TAG, "Adding task...")
+                            val newTask = Task(projectId_fk = projectId)
+                            /**
+                             * Insert the new task into the db. Wait for the newly created id to
+                             * return from the query, then navigate to TaskFragment for adding info.
+                             */
+                            tasksVM.insert(newTask).observe(viewLifecycleOwner) { id ->
+                                arguments = bundleOf("key" to id)
+                                findNavController().navigate(
+                                    R.id.action_projectFragment_to_taskFragment, arguments
+                                )
+                            }
                         }
                     }
                     1 -> {
@@ -116,6 +140,12 @@ class ProjectFragment : Fragment(R.layout.fragment_project) {
             }
         })
     }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putLong("key", projectId)
+    }
+
     // ViewPagerAdapter @param fragment - the container fragment that holds the ViewPager2 view
     inner class ProjectViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
         override fun getItemCount(): Int {

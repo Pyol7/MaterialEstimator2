@@ -20,8 +20,8 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 /**
- * Sets up the view pager and tabs.
- * Each tab displays a fragment that displays data associated with the task.
+ * Sets up the view pager and tabs that displays fragments containing
+ * data associated with the task.
  */
 
 class TaskFragment : Fragment(R.layout.fragment_task) {
@@ -41,7 +41,6 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
          * Listens for the result from MaterialsFragment
          */
         setFragmentResultListener("materialsFragmentRequestKey") { _, bundle ->
-            // Get result
             val newMaterials = MoshiConverters.jsonToMaterials(bundle.getString("key"))
             if (this::task.isInitialized) {
                 // Add material to task.materials

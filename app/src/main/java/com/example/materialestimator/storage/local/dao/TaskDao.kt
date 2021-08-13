@@ -5,6 +5,8 @@ import androidx.room.*
 import com.example.materialestimator.storage.local.entities.Task
 import com.example.materialestimator.storage.local.relationships.TaskWithEmployees
 import com.example.materialestimator.storage.local.relationships.TaskWithTools
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 @Dao
 interface TaskDao {
@@ -18,7 +20,7 @@ interface TaskDao {
     fun getTasksByProjectID(projectId: Long) : LiveData<List<Task>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(task: Task?)
+    suspend fun insert(task: Task?): Long
 
     @Update
     suspend fun update(task: Task?)
